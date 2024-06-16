@@ -1,35 +1,76 @@
-// import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-import styled from 'styled-components';
 import { TabComponent, TabProps } from '@/components/tab.tsx';
-const Title = styled.h1.attrs({ className: 'bg-red-500' })`
-  font-size: 1.5em;
-  text-align: center;
-`;
-
-const tabs: TabProps[] = [
-    { label: 'User', name: 'first', content: <div>User</div> },
-    { label: 'Config', name: 'second', content: <div>Config</div> },
-    { label: 'Role', name: 'third', content: <div>Role</div> },
-    { label: 'Task', name: 'fourth', content: <div>Task</div> },
+import { Button, Input, Select, Space } from 'antd';
+import { UserOutlined, LockFilled } from '@ant-design/icons';
+import { useEffect } from 'react';
+import $ from 'jquery'
+const options = [
+    {
+        value: 'China',
+        label: '+86',
+    },
+    {
+        value: 'USA',
+        label: '+1',
+    },
 ];
-function App() {
-    // const [count, setCount] = useState(0)
-
+const tabs: TabProps[] = [
+    {
+        label: '手机号登录', name: 'first', content:
+            <div className='p-[20px]'>
+                <PhoneLogin />
+            </div>
+    },
+    { label: '工号登录', name: 'second', content: <AccountLogin /> },
+];
+function PhoneLogin() {
+    useEffect(() => {
+        const inputElement = $('input[placeholder="请输入验证码"]');
+        inputElement.css("height", "2rem")
+        const before = $('span.ant-input-group-addon');
+        before.css("width", 110 / 16.4 + "rem")
+            .css("background-color", "white")
+    })
     return (
         <>
-            <div className='flex'>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <Title>fasfasdaf</Title>
-            <div className='grid grid-row-2 w-[400px] h-[200px]'>
+            <Space direction="vertical" size="middle">
+                <Space.Compact style={{ width: '100%' }}>
+                    <Select defaultValue="+86" options={options} className='w-[10rem]' />
+                    <Input defaultValue="" placeholder='请输入手机号' />
+                </Space.Compact>
+                <Space.Compact style={{ width: "100%", }}>
+                    <Input placeholder='请输入验证码' addonBefore="获取验证码" />
+                </Space.Compact>
+                <Space.Compact>
+                    <Button>提交</Button>
+                    <Button>重置</Button>
+                </Space.Compact>
+            </Space >
+        </>
+    )
+}
+function AccountLogin() {
+    return (
+        <>
+            <Space direction="vertical" size="middle">
+                <Space.Compact style={{ width: '100%' }}>
+                    <Input defaultValue="" placeholder='请输入工号' prefix={<UserOutlined />} addonBefore="工号" />
+                </Space.Compact>
+                <Space.Compact style={{ width: "100%", }}>
+                    <Input placeholder='请输入密码' addonBefore="密码" prefix={<LockFilled />} />
+                </Space.Compact>
+                <Space.Compact>
+                    <Button>提交</Button>
+                    <Button>重置</Button>
+                </Space.Compact >
+            </Space>
+        </>
+    )
+}
+function App() {
+    return (
+        <>
+            <div className='grid grid-row-2 w-[800px] h-[400px]'>
                 <div className='bg-green-100 flex items-center justify-center'>
                     <span className='text-3xl'>
                         请假管理系统

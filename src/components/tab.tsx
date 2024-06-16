@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { styled, css } from 'styled-components'
+import styled from 'styled-components';
+import { css } from 'styled-components'
 const TabItem = styled.div<{ active: boolean }>`
-    color: red;
+    color: black;
     font-size: 20px;
     position:  relative;
     padding-bottom: 5px;
@@ -11,18 +12,16 @@ const TabItem = styled.div<{ active: boolean }>`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: red;
-    transition: background-color  1s ease-in-out;
-    transition: height 0.3s ease;
+    width: 0px;
+    height: 4px;
+    background-color: blue;
+    transition: all 1s ease;
   }
     ${props => props.active &&
         css`
         color: blue;
         &::after{
-        background-color: blue;
-        height: 4px;
+        width: 100%;
         }
     `
     }
