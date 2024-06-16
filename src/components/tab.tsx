@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
 import { styled, css } from 'styled-components'
 const TabItem = styled.div<{ active: boolean }>`
-    color:red;
+    color: red;
     font-size: 20px;
-    ${props =>
-        props.active && css`
-                color:blue;
-            `
+    position:  relative;
+    padding-bottom: 5px;
+    transition: color  0.3 ease-in-out;
+    &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: red;
+    transition: background-color  1s ease-in-out;
+    transition: height 0.3s ease;
+  }
+    ${props => props.active &&
+        css`
+        color: blue;
+        &::after{
+        background-color: blue;
+        height: 4px;
+        }
+    `
     }
 `
 
