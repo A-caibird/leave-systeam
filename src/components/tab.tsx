@@ -1,4 +1,14 @@
 import React, { useState } from 'react';
+import { styled, css } from 'styled-components'
+const TabItem = styled.div<{ active: boolean }>`
+    color:red;
+    font-size: 20px;
+    ${props =>
+        props.active && css`
+                color:blue;
+            `
+    }
+`
 
 export interface TabProps {
     label: string;
@@ -8,23 +18,16 @@ export interface TabProps {
 
 export const TabComponent: React.FC<{ Tabs: TabProps[] }> = ({ Tabs }) => {
     const [activeName, setActiveName] = useState('first');
-    console.log(Tabs)
-
     const handleClick = (name: string) => {
         setActiveName(name);
     };
-
     return (
         <div className="demo-tabs">
-            <div className="tab-header">
+            <div className="tab-header flex justify-around">
                 {Tabs.map((tab) => (
-                    <div
-                        key={tab.name}
-                        className={`tab-item ${activeName === tab.name ? 'active' : ''}`}
-                        onClick={() => handleClick(tab.name)}
-                    >
+                    <TabItem key={tab.name} onClick={() => handleClick(tab.name)} active={activeName === tab.name}>
                         {tab.label}
-                    </div>
+                    </TabItem>
                 ))}
             </div>
             <div className="tab-content">

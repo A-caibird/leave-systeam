@@ -1,4 +1,4 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -16,11 +16,11 @@ const tabs: TabProps[] = [
     { label: 'Task', name: 'fourth', content: <div>Task</div> },
 ];
 function App() {
-    const [count, setCount] = useState(0)
+    // const [count, setCount] = useState(0)
 
     return (
         <>
-            <div>
+            <div className='flex'>
                 <a href="https://vitejs.dev" target="_blank">
                     <img src={viteLogo} className="logo" alt="Vite logo" />
                 </a>
@@ -28,35 +28,16 @@ function App() {
                     <img src={reactLogo} className="logo react" alt="React logo" />
                 </a>
             </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs text-fuchsia-50">
-                Click on the Vite and React logos to learn more
-            </p>
-            <p className="text-3xl">
-                Hello world!
-            </p>
             <Title>fasfasdaf</Title>
-            <div className='grid grid-row-2 w-[200px] h-[200px]'>
+            <div className='grid grid-row-2 w-[400px] h-[200px]'>
                 <div className='bg-green-100 flex items-center justify-center'>
                     <span className='text-3xl'>
-                        请假管理
+                        请假管理系统
                     </span>
                 </div>
-                <div className=' bg-green-300'>
-
+                <div className='bg-green-300'>
+                    <TabComponent Tabs={tabs} />
                 </div>
-            </div>
-            <div>
-
-                <TabComponent Tabs={tabs} />
             </div>
         </>
     )
