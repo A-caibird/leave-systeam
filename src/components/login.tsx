@@ -64,7 +64,12 @@ function PhoneLogin() {
         alert(userInfo.phone)
         console.log(e.currentTarget)
     }
-
+    function  reset(){
+        setUserInfo(()=>({
+            phone: "",
+            code: ""
+        }))
+    }
     return (
         <>
             <Space direction="vertical" size="middle" >
@@ -77,16 +82,16 @@ function PhoneLogin() {
                 </Space.Compact>
                 <Space.Compact style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Button onClick={submit}>提交</Button>
-                    <Button>重置</Button>
+                    <Button onClick={reset}>重置</Button>
                 </Space.Compact>
             </Space >
         </>
     )
 }
 function AccountLogin() {
-    const [userInfo, setUserInfo] = useState<{ accout: string, password: string }>(
+    const [userInfo, setUserInfo] = useState<{ account: string, password: string }>(
         {
-            accout: "",
+            account: "",
             password: ""
         }
     )
@@ -96,7 +101,7 @@ function AccountLogin() {
     function accountChange(e: React.ChangeEvent<HTMLInputElement>) {
         setUserInfo(prev => ({
             ...prev,
-            acount: e.target.value
+            account: e.target.value
         }))
     }
     function passwordChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -106,18 +111,24 @@ function AccountLogin() {
         })
         )
     }
+    function reset(){
+        setUserInfo(()=>({
+            account:"",
+            password:""
+        }))
+    }
     return (
         <>
             <Space direction="vertical" size="middle">
                 <Space.Compact style={{ width: '100%' }}>
-                    <Input defaultValue="" placeholder='请输入工号' prefix={<UserOutlined />} addonBefore="工号" value={userInfo.accout} onChange={accountChange} />
+                    <Input defaultValue="" placeholder='请输入工号' prefix={<UserOutlined />} addonBefore="工号" value={userInfo.account} onChange={accountChange} />
                 </Space.Compact>
                 <Space.Compact style={{ width: "100%", }}>
                     <Input placeholder='请输入密码' addonBefore="密码" prefix={<LockFilled />} value={userInfo.password} onChange={passwordChange} />
                 </Space.Compact>
                 <Space.Compact style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Button onClick={submit}>提交</Button>
-                    <Button>重置</Button>
+                    <Button onClick={reset}>重置</Button>
                 </Space.Compact >
             </Space>
         </>
