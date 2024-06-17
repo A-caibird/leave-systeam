@@ -1,4 +1,4 @@
-import LogIn from "./components/login"
+import LogIn from "./views/home/login.tsx"
 
 function App() {
     return (

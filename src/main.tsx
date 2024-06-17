@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Login from "@/components/login.tsx";
+import Login from "@/views/home/login.tsx";
 import './index.css'
 import {
     createBrowserRouter,
