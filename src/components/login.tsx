@@ -75,7 +75,7 @@ function PhoneLogin() {
                 <Space.Compact style={{ width: "100%", }}>
                     <Input placeholder='请输入验证码' addonBefore="获取验证码" value={userInfo.code} onChange={CodeChange} />
                 </Space.Compact>
-                <Space.Compact style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                <Space.Compact style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Button onClick={submit}>提交</Button>
                     <Button>重置</Button>
                 </Space.Compact>
@@ -84,17 +84,39 @@ function PhoneLogin() {
     )
 }
 function AccountLogin() {
+    const [userInfo, setUserInfo] = useState<{ accout: string, password: string }>(
+        {
+            accout: "",
+            password: ""
+        }
+    )
+    function submit() {
+        console.log(userInfo)
+    }
+    function accountChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setUserInfo(prev => ({
+            ...prev,
+            acount: e.target.value
+        }))
+    }
+    function passwordChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setUserInfo(prev => ({
+            ...prev,
+            password: e.target.value
+        })
+        )
+    }
     return (
         <>
             <Space direction="vertical" size="middle">
                 <Space.Compact style={{ width: '100%' }}>
-                    <Input defaultValue="" placeholder='请输入工号' prefix={<UserOutlined />} addonBefore="工号" />
+                    <Input defaultValue="" placeholder='请输入工号' prefix={<UserOutlined />} addonBefore="工号" value={userInfo.accout} onChange={accountChange} />
                 </Space.Compact>
                 <Space.Compact style={{ width: "100%", }}>
-                    <Input placeholder='请输入密码' addonBefore="密码" prefix={<LockFilled />} />
+                    <Input placeholder='请输入密码' addonBefore="密码" prefix={<LockFilled />} value={userInfo.password} onChange={passwordChange} />
                 </Space.Compact>
-                <Space.Compact style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                    <Button>提交</Button>
+                <Space.Compact style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <Button onClick={submit}>提交</Button>
                     <Button>重置</Button>
                 </Space.Compact >
             </Space>
