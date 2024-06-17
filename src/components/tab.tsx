@@ -6,7 +6,6 @@ const TabItem = styled.div<{ active: boolean }>`
     font-size: 20px;
     position:  relative;
     padding-bottom: 5px;
-    transition: color  0.3 ease-in-out;
     &::after {
     content: '';
     position: absolute;
