@@ -1,4 +1,4 @@
-import LogIn from "./views/home/login.tsx"
+import LogIn from "./views/login/login.tsx"
 
 function App() {
     return (
