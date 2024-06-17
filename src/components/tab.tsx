@@ -5,7 +5,6 @@ const TabItem = styled.div<{ active: boolean }>`
     color: black;
     font-size: 20px;
     position:  relative;
-    padding-bottom: 5px;
     &::after {
     content: '';
     position: absolute;
@@ -38,15 +37,15 @@ export const TabComponent: React.FC<{ Tabs: TabProps[] }> = ({ Tabs }) => {
         setActiveName(name);
     };
     return (
-        <div className="demo-tabs">
-            <div className="tab-header flex justify-around">
+        <div className="w-full h-full">
+            <div className="flex justify-around">
                 {Tabs.map((tab) => (
                     <TabItem key={tab.name} onClick={() => handleClick(tab.name)} active={activeName === tab.name}>
                         {tab.label}
                     </TabItem>
                 ))}
             </div>
-            <div className="tab-content">
+            <div className="w-full h-full flex justify-center items-center bg-red-500">
                 {Tabs.map((tab) => activeName === tab.name && tab.content)}
             </div>
         </div>
