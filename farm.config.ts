@@ -1,5 +1,4 @@
 import { defineConfig } from "@farmfe/core";
-import react from '@vitejs/plugin-react-swc'
 import path from "node:path"
 import farmJsPluginPostcss from '@farmfe/js-plugin-postcss';
 // https://vitejs.dev/config/
@@ -20,14 +19,10 @@ export default defineConfig({
         resolve: {
             alias: {
                 "@": path.join(process.cwd(), "src"),
-                stream$: "readable-stream",
             },
         },
         progress: true
     },
-    vitePlugins: [
-        react()
-    ],
     plugins: [farmJsPluginPostcss({
         postcssLoadConfig: {
             // load config from client/postcss.config.js
