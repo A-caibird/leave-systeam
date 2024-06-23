@@ -1,39 +1,20 @@
 import React from 'react';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Menu } from 'antd';
+import { Menu, } from 'antd';
+import { Outlet } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 const items: MenuItem[] = [
     {
         key: 'sub1',
-        label: 'Navigation One',
+        label: '请假信息面板',
         icon: <MailOutlined />,
-        children: [
-            {
-                key: 'g1',
-                label: 'Item 1',
-                type: 'group',
-                children: [
-                    { key: '1', label: 'Option 1' },
-                    { key: '2', label: 'Option 2' },
-                ],
-            },
-            {
-                key: 'g2',
-                label: 'Item 2',
-                type: 'group',
-                children: [
-                    { key: '3', label: 'Option 3' },
-                    { key: '4', label: 'Option 4' },
-                ],
-            },
-        ],
     },
     {
         key: 'sub2',
-        label: 'Navigation Two',
+        label: '个人信息管理',
         icon: <AppstoreOutlined />,
         children: [
             { key: '5', label: 'Option 5' },
@@ -79,14 +60,21 @@ const Home: React.FC = () => {
     };
 
     return (
-        <Menu
-            onClick={onClick}
-            style={{ width: 256 }}
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            mode="inline"
-            items={items}
-        />
+        <div className='h-svh w-svw grid grid-cols-[247px_auto]'>
+            <div className='bg-red-100'>
+                <Menu
+                    onClick={onClick}
+                    style={{ width: 256 }}
+                    defaultSelectedKeys={['1']}
+                    defaultOpenKeys={['sub1']}
+                    mode="inline"
+                    items={items}
+                />
+            </div>
+            <div className='bg-blue-200'>
+                <Outlet></Outlet>
+            </div>
+        </div>
     );
 };
 
