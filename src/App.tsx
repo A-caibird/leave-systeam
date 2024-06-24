@@ -20,11 +20,13 @@ const routers = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Pane />
+                element: <Pane />,
+                errorElement: <Error />
             },
             {
                 path: "error",
-                element: <Error />
+                element: <Error />,
+                errorElement: <Error />
             }
         ]
     }

@@ -1,8 +1,16 @@
-import React from "react";
-const Error:React.FC = () => {
+import React from 'react';
+import { Button, Result } from 'antd';
+import { useNavigate } from 'react-router-dom';
+const Error: React.FC = () => {
+    const navigate = useNavigate();
     return (
-        <h1>fasfas</h1>
+        <Result
+            status="404"
+            title="404"
+            subTitle="Sorry, the page you visited does not exist."
+            extra={<Button type="primary" onClick={() => { navigate(-1); }}> 返回上一个页面</Button >}
+        />
     )
 }
-export default Error;
 
+export default Error;
