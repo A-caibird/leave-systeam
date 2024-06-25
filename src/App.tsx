@@ -7,33 +7,32 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import Pane from "@/components/pane.tsx";
+import withErrorCheck from "@/utils/ErrorBoundary";
 
+const A = withErrorCheck(Login)
 const routers = createBrowserRouter([
     {
         path: "/",
-        element: <Login />,
-        errorElement: <Error />
+        element: <A/>
     }, {
         path: "/home",
-        element: <Home />,
-        errorElement: <Error />,
+        element: <Home/>,
         children: [
             {
                 index: true,
-                element: <Pane />,
-                errorElement: <Error />
-            },
-            {
-                path: "error",
-                element: <Error />,
-                errorElement: <Error />
+                element: <Pane/>,
             }
         ]
+    },
+    {
+        path: "*",
+        element: <Error/>
     }
 ]);
 
 export const App: React.FC = () => {
     return (
-        <RouterProvider router={routers} />
+        <RouterProvider router={routers}/>
     )
+
 }
