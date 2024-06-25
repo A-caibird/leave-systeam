@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Pane from "@/components/pane.tsx";
 import withErrorCheck from "@/utils/ErrorBoundary";
+import HomeCalendar from "@/components/calendar.tsx";
 
 const A = withErrorCheck(Login)
 const routers = createBrowserRouter([
@@ -20,7 +21,10 @@ const routers = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Pane/>,
+                element: <HomeCalendar/>,
+            }, {
+                path: "pane",
+                element: <Pane/>
             }
         ]
     },
