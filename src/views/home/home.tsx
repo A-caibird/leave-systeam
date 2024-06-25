@@ -8,7 +8,7 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 const items: MenuItem[] = [
     {
-        key: '/home',
+        key: '/home/pane',
         label: '请假信息面板',
         icon: <MailOutlined />,
     },
@@ -56,7 +56,7 @@ const Home: React.FC = () => {
                     items={items}
                 />
             </div>
-            <div className='bg-blue-200'>
+            <div className='bg-blue-200 w-full h-full'>
                 <Outlet></Outlet>
             </div>
         </div>
