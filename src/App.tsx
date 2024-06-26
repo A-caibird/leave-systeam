@@ -12,6 +12,7 @@ import HomeCalendar from "@/components/calendar.tsx";
 import AskForLeave from "@/views/home/ask_for_leave.tsx";
 import {ConfigProvider, theme} from "antd"
 import zhCN from "antd/lib/locale/zh_CN";
+import BackGround from "@/components/three.tsx";
 
 const A = withErrorCheck(Login)
 const routers = createBrowserRouter([
@@ -36,6 +37,10 @@ const routers = createBrowserRouter([
                 element: <HomeCalendar/>
             }
         ]
+    },
+    {
+        path:"/three",
+        element:<BackGround/>
     },
     {
         path: "*",
