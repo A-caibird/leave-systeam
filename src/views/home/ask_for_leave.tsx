@@ -70,7 +70,7 @@ const AskForLeave: React.FC = () => {
             css("width", "184px");
     })
     return (
-        <div className={"bg-white w-full h-full"}>
+        <div className={"bg-white w-full h-full relative"}>
             <div className={"text-black text-[2rem] w-full p-[3rem] text-center flex justify-center "}>
                 <span>请假信息表</span>
             </div>
@@ -109,16 +109,21 @@ const AskForLeave: React.FC = () => {
                         <TextArea rows={4} placeholder="最多200字" maxLength={200} className="w-full h-[200px]" />
                     </div>
                 </div>
-                <div className={""}>
+                <div className={"bg-[white]"}>
                     <div className={"text-center text-black bg-red-100 border-l-2 border-l-black"}>
                         <span>
                             佐证附件
                         </span>
                     </div>
-                    <div>
-                        <FileUpload/>
+                    <div className={""}>
+                        <FileUpload />
                     </div>
                 </div>
+            </div>
+            <div className={"w-full absolute bottom-[40px] flex items-center justify-center"}>
+                <span className={"text-black bg-red-500 px-[20px] py-[5px] rounded-2xl"}>
+                    申请请假
+                </span>
             </div>
         </div>
     )
