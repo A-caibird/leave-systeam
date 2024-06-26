@@ -70,7 +70,7 @@ const Home: React.FC = () => {
                     className={""}
                 />
             </div>
-            <div className='bg-blue-200 w-full h-full'>
+            <div className='bg-blue-200 w-full h-svh'>
                 <Outlet></Outlet>
             </div>
         </div>
