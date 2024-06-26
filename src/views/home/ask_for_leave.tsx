@@ -112,7 +112,7 @@ const AskForLeave: React.FC = () => {
                 <div className={""}>
                     <div className={"text-center text-black bg-red-100 border-l-2 border-l-black"}>
                         <span>
-                            作证附件
+                            佐证附件
                         </span>
                     </div>
                     <div>
