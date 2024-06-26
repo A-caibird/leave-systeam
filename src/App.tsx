@@ -43,7 +43,9 @@ const routers = createBrowserRouter([
 
 export const App: React.FC = () => {
     return (
-        <RouterProvider router={routers}/>
+        <>
+            <RouterProvider router={routers}/>
+        </>
     )
 
 }
