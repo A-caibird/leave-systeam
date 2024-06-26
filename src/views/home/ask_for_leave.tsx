@@ -1,11 +1,11 @@
-import React from "react"
+import React, {useEffect} from "react"
 import type {CascaderProps, DatePickerProps} from 'antd';
 import {Cascader} from 'antd';
 import styled from "styled-components";
 import {DatePicker} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import FileUpload from "@/components/fileUpload.tsx";
-
+import $ from 'jquery'
 
 interface Option {
     value: string;
@@ -65,6 +65,10 @@ const onChangeCascader: CascaderProps<Option>['onChange'] = (value) => {
     console.log(value);
 };
 const AskForLeave: React.FC = () => {
+    useEffect(()=>{
+        $('div.ant-picker.ant-picker-outlined.css-dev-only-do-not-override-zg0ahe').
+            css("width", "184px");
+    })
     return (
         <div className={"bg-white w-full h-full"}>
             <div className={"text-black text-[2rem] w-full p-[3rem] text-center flex justify-center "}>
