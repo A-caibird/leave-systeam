@@ -45,7 +45,7 @@ export const TabComponent: React.FC<{ Tabs: TabProps[] }> = ({ Tabs }) => {
                     </TabItem>
                 ))}
             </div>
-            <div className="w-full h-full flex justify-center items-center bg-red-500">
+            <div className="w-full h-full flex justify-center items-center bg-red-500 dark:bg-[#333333]">
                 {Tabs.map((tab) => activeName === tab.name && tab.content)}
             </div>
         </div>

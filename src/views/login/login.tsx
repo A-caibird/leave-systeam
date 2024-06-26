@@ -40,7 +40,7 @@ function SelectIdentify({select}: { select: (val: number) => void }) {
         select(a);
     }
     return (
-        <Radio.Group onChange={onChange} value={value} className={"flex justify-around bg-blue-100 w-[251px]"}>
+        <Radio.Group onChange={onChange} value={value} className={"flex justify-around bg-blue-100 w-[251px] dark:bg-black"}>
             <Radio value={1}>管理员</Radio>
             <Radio value={2}>老师</Radio>
             <Radio value={3}>学生</Radio>
@@ -55,6 +55,8 @@ function PhoneLogin() {
         const before = $('span.ant-input-group-addon');
         before.css("width", 110 / 16.4 + "rem")
             .css("background-color", "white")
+
+        $('span.ant-input-group-addon[style="width: 6.707317rem; background-color: white;"]:contains("获取验证码")').css('background-color', 'green')
     })
 
     const [userInfo, setUserInfo] = useState<{
@@ -112,16 +114,16 @@ function PhoneLogin() {
                     <Input defaultValue="" placeholder='请输入手机号' value={userInfo.phone} onChange={PhoneChange}/>
                 </Space.Compact>
                 <Space.Compact style={{width: "100%",}}>
-                    <Input placeholder='请输入验证码' addonBefore="获取验证码" value={userInfo.code}
+                    <Input placeholder='请输入验证码'  addonBefore="获取验证码" value={userInfo.code}
                            onChange={CodeChange}/>
                 </Space.Compact>
-                <Space.Compact className="bg-blue-400">
-                    <div className="w-[109px]  text-center border-r-blue-950 border-r-2">
+                <Space.Compact >
+                    <div className="w-[109px] bg-blue-400 text-center border-r-blue-950 border-r-2 rounded-l-full">
                         <span className="text-black">
                             选择身份
                         </span>
                     </div>
-                    <SelectIdentify select={onSelect}/>
+                    <SelectIdentify select={onSelect} />
                 </Space.Compact>
                 <Space.Compact style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <Button onClick={submit}>提交</Button>
@@ -187,8 +189,8 @@ function AccountLogin() {
                     <Input placeholder='请输入密码' addonBefore="密码" prefix={<LockFilled/>} value={userInfo.password}
                            onChange={passwordChange}/>
                 </Space.Compact>
-                 <Space.Compact className="bg-blue-400">
-                    <div className="w-[109px]  text-center border-r-blue-950 border-r-2">
+                 <Space.Compact >
+                    <div className="w-[109px]  text-center bg-blue-400 border-r-blue-950 border-r-2 rounded-l-full">
                         <span className="text-black">
                             选择身份
                         </span>
@@ -207,13 +209,13 @@ function AccountLogin() {
 function LogIn() {
     return (
         <>
-            <div className='grid grid-row-2 w-[800px] h-[600px]'>
-                <div className='bg-green-100 flex items-center justify-center'>
-                    <span className='text-3xl text-black'>
+            <div className='grid grid-row-2 w-[800px] h-[600px] dark:bg-black '>
+                <div className='bg-green-100 flex items-center justify-center dark:bg-gray-700  '>
+                    <span className='text-3xl text-black dark:text-amber-50'>
                         请假管理系统
                     </span>
                 </div>
-                <div className='bg-green-300 h-[30rem]'>
+                <div className='bg-green-300 dark:bg-gray-200 h-[30rem]'>
                     <TabComponent Tabs={tabs}/>
                 </div>
             </div>
