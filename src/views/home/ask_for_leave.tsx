@@ -107,7 +107,7 @@ const AskForLeave: React.FC = () => {
             </Item>
             <div className={"grid grid-cols-2 w-full h-[200px]"}>
                 <div className={""}>
-                    <div className={"text-center text-black bg-red-100"}>
+                    <div className={"text-center text-black bg-blue-200"}>
                         <span>请假详细事由</span>
                     </div>
                     <div className={""}>
@@ -115,7 +115,7 @@ const AskForLeave: React.FC = () => {
                     </div>
                 </div>
                 <div className={"bg-[white] dark:bg-[#333333]"}>
-                    <div className={"text-center text-black bg-red-100 border-l-2 border-l-black"}>
+                    <div className={"text-center text-black bg-blue-200 border-l-2 border-l-black"}>
                         <span>
                             佐证附件
                         </span>
