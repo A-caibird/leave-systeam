@@ -111,6 +111,8 @@ const HomeCalendar: React.FC = () => {
            init()
         });
         init()
+        // 不要年月选项
+        $("div.ant-col.css-dev-only-do-not-override-zg0ahe").last().remove()
     })
     const init = ()=>{
         const  ScreenHeight = $(window).height();
