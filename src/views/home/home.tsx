@@ -9,15 +9,25 @@ type MenuItem = Required<MenuProps>['items'][number];
 const items: MenuItem[] = [
     {
         key: '/home/pane',
-        label: '请假信息面板',
+        label: '请假模块',
         icon: <MailOutlined />,
+        children:[
+            {
+                key:"1",
+                label:"申请请假"
+            },
+            {
+                key:"2",
+                label:"信息面板"
+            }
+        ]
     },
     {
         type: 'divider',
     },
     {
         key: 'info',
-        label: '个人信息管理',
+        label: '个人信息',
         icon: <AppstoreOutlined />,
         children: [
             { key: '5', label: 'Option 5' },
@@ -51,7 +61,7 @@ const Home: React.FC = () => {
                     onClick={onClick}
                     style={{ width: 256 }}
                     defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['sub1']}
+                    defaultOpenKeys={['/home/pane',"info"]}
                     mode="inline"
                     items={items}
                 />

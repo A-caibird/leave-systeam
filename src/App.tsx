@@ -6,9 +6,10 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import Pane from "@/components/pane.tsx";
+import Pane from "@/views/home/pane.tsx";
 import withErrorCheck from "@/utils/ErrorBoundary";
 import HomeCalendar from "@/components/calendar.tsx";
+import AskForLeave from "@/views/home/ask_for_leave.tsx";
 
 const A = withErrorCheck(Login)
 const routers = createBrowserRouter([
@@ -23,8 +24,11 @@ const routers = createBrowserRouter([
                 index: true,
                 element: <HomeCalendar/>,
             }, {
-                path: "pane",
+                path: "2",
                 element: <Pane/>
+            }, {
+                path: "1",
+                element: <AskForLeave/>
             }
         ]
     },
