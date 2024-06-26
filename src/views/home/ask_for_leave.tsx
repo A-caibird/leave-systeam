@@ -47,13 +47,18 @@ const options: Option[] = [
 const Item = styled.div`
     width: 100%;
     height: 3rem;
+    @media (prefers-color-scheme: dark) {
+        background-color: #333333; /* 深灰色背景 */
+        color: #ffffff; /* 白色文字 */
+        border-color: black;
+    }
     background-color: #cbd8ea;
     display: flex;
     flex-direction: row;
     text-align: center;
     align-items: center;
     border-radius: 0.2rem;
-    border-width: 1px;
+    border-width: 1px 0;
     border-style: solid;
     border-color: #a1daa1;
     position: relative;
@@ -70,12 +75,12 @@ const AskForLeave: React.FC = () => {
             css("width", "184px");
     })
     return (
-        <div className={"bg-white w-full h-full relative"}>
-            <div className={"text-black text-[2rem] w-full p-[3rem] text-center flex justify-center "}>
+        <div className={"bg-white dark:bg-[#333333] w-full h-full relative"}>
+            <div className={"text-black   dark:text-amber-50  text-[2rem] w-full p-[3rem] text-center flex justify-center "}>
                 <span>请假信息表</span>
             </div>
             <Item>
-                <span className={"text-black  left-[17%] absolute"}>
+                <span className={"text-black dark:text-amber-50 left-[17%] absolute"}>
                     请假类型
                 </span>
                 <span className={"absolute right-[17%]"}>
@@ -84,7 +89,7 @@ const AskForLeave: React.FC = () => {
                 </span>
             </Item>
             <Item>
-                <span className={"text-black  left-[17%] absolute"}>
+                <span className={"text-black dark:text-amber-50 left-[17%] absolute"}>
                     开始时间
                 </span>
                 <span className={"absolute right-[17%]"}>
@@ -93,7 +98,7 @@ const AskForLeave: React.FC = () => {
             </Item>
 
             <Item>
-                <span className={"text-black  left-[17%] absolute"}>
+                <span className={"text-black dark:text-amber-50  left-[17%] absolute"}>
                     结束时间
                 </span>
                 <span className={"absolute right-[17%]"}>
@@ -106,10 +111,10 @@ const AskForLeave: React.FC = () => {
                         <span>请假详细事由</span>
                     </div>
                     <div className={""}>
-                        <TextArea rows={4} placeholder="最多200字" maxLength={200} className="w-full h-[200px]" />
+                        <TextArea rows={10} placeholder="最多200字" maxLength={200} className="w-full h-[200px]" />
                     </div>
                 </div>
-                <div className={"bg-[white]"}>
+                <div className={"bg-[white] dark:bg-[#333333]"}>
                     <div className={"text-center text-black bg-red-100 border-l-2 border-l-black"}>
                         <span>
                             佐证附件

@@ -36,7 +36,7 @@ const props: UploadProps = {
 };
 
 const FileUpload: React.FC = () => (
-    <Upload {...props}>
+    <Upload {...props} className={"dark:bg-black"}>
         <Button icon={<UploadOutlined />}>上传附件</Button>
     </Upload>
 );
