@@ -59,7 +59,7 @@ const Home: React.FC = () => {
 
     return (
         <div className='h-svh w-svw grid grid-cols-[247px_auto]'>
-            <div className='bg-red-100'>
+            <div className='border-solid border-r-2 border-r-black pr-[2px] box-border'>
                 <Menu
                     onClick={onClick}
                     style={{width: 256}}
@@ -67,6 +67,7 @@ const Home: React.FC = () => {
                     defaultOpenKeys={['/home/pane', "info"]}
                     mode="inline"
                     items={items}
+                    className={""}
                 />
             </div>
             <div className='bg-blue-200 w-full h-full'>
