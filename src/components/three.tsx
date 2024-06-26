@@ -3,20 +3,22 @@ import "@/main.css"
 import * as THREE from 'three';
 
 import Stats from 'stats-gl';
-import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+import {GUI} from 'three/addons/libs/lil-gui.module.min.js';
 
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { radixSort } from 'three/addons/utils/SortUtils.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {radixSort} from 'three/addons/utils/SortUtils.js';
 import WebGPURenderer from 'three/addons/renderers/webgpu/WebGPURenderer.js';
-import { MeshNormalNodeMaterial } from 'three/nodes';
+import {MeshNormalNodeMaterial} from 'three/nodes';
 import $ from 'jquery';
+
+type GeometryType = THREE.ConeGeometry | THREE.BoxGeometry | THREE.SphereGeometry;
 const BackGround: React.FC = () => {
-    useEffect(()=>{
-        let camera, scene, renderer;
-        let controls, stats;
+    useEffect(() => {
+        let camera: THREE.PerspectiveCamera | null, scene: THREE.Scene | null, renderer: WebGPURenderer | null;
+        let controls: OrbitControls, stats: Stats;
         let gui;
-        let geometries, mesh, material;
-        const ids = [];
+        let geometries: GeometryType [], mesh: THREE.BatchedMesh | null, material: MeshNormalNodeMaterial;
+        const ids: number[] = [];
 
         const matrix = new THREE.Matrix4();
 
@@ -47,7 +49,7 @@ const BackGround: React.FC = () => {
 
         //
 
-        function randomizeMatrix( matrix ) {
+        function randomizeMatrix(matrix: THREE.Matrix4) {
 
             position.x = Math.random() * 40 - 20;
             position.y = Math.random() * 40 - 20;
@@ -57,15 +59,15 @@ const BackGround: React.FC = () => {
             rotation.y = Math.random() * 2 * Math.PI;
             rotation.z = Math.random() * 2 * Math.PI;
 
-            quaternion.setFromEuler( rotation );
+            quaternion.setFromEuler(rotation);
 
-            scale.x = scale.y = scale.z = 0.5 + ( Math.random() * 0.5 );
+            scale.x = scale.y = scale.z = 0.5 + (Math.random() * 0.5);
 
-            return matrix.compose( position, quaternion, scale );
+            return matrix.compose(position, quaternion, scale);
 
         }
 
-        function randomizeRotationSpeed( rotation ) {
+        function randomizeRotationSpeed(rotation: THREE.Euler) {
 
             rotation.x = Math.random() * 0.01;
             rotation.y = Math.random() * 0.01;
@@ -77,16 +79,16 @@ const BackGround: React.FC = () => {
         function initGeometries() {
 
             geometries = [
-                new THREE.ConeGeometry( 1.0, 2.0 ),
-                new THREE.BoxGeometry( 2.0, 2.0, 2.0 ),
-                new THREE.SphereGeometry( 1.0, 16, 8 ),
+                new THREE.ConeGeometry(1.0, 2.0),
+                new THREE.BoxGeometry(2.0, 2.0, 2.0),
+                new THREE.SphereGeometry(1.0, 16, 8),
             ];
 
         }
 
         function createMaterial() {
 
-            if ( ! material ) {
+            if (!material) {
 
                 material = new MeshNormalNodeMaterial();
 
@@ -98,21 +100,17 @@ const BackGround: React.FC = () => {
 
         function cleanup() {
 
-            if ( mesh ) {
-
-                mesh.parent.remove( mesh );
-
-                if ( mesh.dispose ) {
-
+            if (mesh) {
+                if (mesh.parent)
+                    mesh.parent.remove(mesh);
+                if (mesh.dispose) {
                     mesh.dispose();
-
                 }
             }
 
         }
 
         function initMesh() {
-
             cleanup();
             initBatchedMesh();
 
@@ -126,7 +124,7 @@ const BackGround: React.FC = () => {
 
             const euler = new THREE.Euler();
             const matrix = new THREE.Matrix4();
-            mesh = new THREE.BatchedMesh( geometryCount, vertexCount, indexCount, createMaterial() );
+            mesh = new THREE.BatchedMesh(geometryCount, vertexCount, indexCount, createMaterial());
             mesh.userData.rotationSpeeds = [];
 
             // disable full-object frustum culling since all of the objects can be dynamic.
@@ -134,70 +132,68 @@ const BackGround: React.FC = () => {
 
             ids.length = 0;
 
-            for ( let i = 0; i < api.count; i ++ ) {
+            for (let i = 0; i < api.count; i++) {
 
-                const id = mesh.addGeometry( geometries[ i % geometries.length ] );
-                mesh.setMatrixAt( id, randomizeMatrix( matrix ) );
+                const id = mesh.addGeometry(geometries[i % geometries.length]);
+                mesh.setMatrixAt(id, randomizeMatrix(matrix));
 
                 const rotationMatrix = new THREE.Matrix4();
-                rotationMatrix.makeRotationFromEuler( randomizeRotationSpeed( euler ) );
-                mesh.userData.rotationSpeeds.push( rotationMatrix );
+                rotationMatrix.makeRotationFromEuler(randomizeRotationSpeed(euler));
+                mesh.userData.rotationSpeeds.push(rotationMatrix);
 
-                ids.push( id );
+                ids.push(id);
 
             }
-
-            scene.add( mesh );
+            if (scene)
+                scene.add(mesh);
 
         }
 
 
+        function init(forceWebGL = false) {
 
-        function init( forceWebGL = false ) {
-
-            if ( renderer ) {
+            if (renderer) {
 
                 renderer.dispose();
                 controls.dispose();
-                document.body.removeChild( stats.dom );
-                document.body.removeChild( renderer.domElement );
+                document.body.removeChild(stats.dom);
+                document.body.removeChild(renderer.domElement);
 
             }
-
-            document.getElementById( 'backend' ).innerText = 'Active Backend: ' + ( forceWebGL ? 'WebGL' : 'WebGPU' );
+            const backend = $("backend")
+            backend.text('Active Backend: ' + (forceWebGL ? 'WebGL' : 'WebGPU'))
             // camera
 
             const aspect = window.innerWidth / window.innerHeight;
 
-            camera = new THREE.PerspectiveCamera( 70, aspect, 1, 100 );
+            camera = new THREE.PerspectiveCamera(70, aspect, 1, 100);
             camera.position.z = 50;
 
             // renderer
 
-            renderer = new WebGPURenderer( { antialias: true, forceWebGL } );
-            renderer.setPixelRatio( window.devicePixelRatio );
-            renderer.setSize( window.innerWidth, window.innerHeight );
+            renderer = new WebGPURenderer({antialias: true, forceWebGL});
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
 
-            renderer.setAnimationLoop( animate );
+            renderer.setAnimationLoop(animate);
 
             // scene
 
             scene = new THREE.Scene();
-            scene.background = new THREE.Color( 0xffffff );
+            scene.background = new THREE.Color(0xffffff);
 
 
-            if ( forceWebGL ) {
+            if (forceWebGL) {
 
-                scene.background = new THREE.Color( 0xf10000 );
+                scene.background = new THREE.Color(0xf10000);
 
             } else {
 
-                scene.background = new THREE.Color( 0x0000f1 );
+                scene.background = new THREE.Color(0x0000f1);
 
             }
 
-            document.body.appendChild( renderer.domElement );
-
+            document.body.appendChild(renderer.domElement);
 
 
             initGeometries();
@@ -205,34 +201,34 @@ const BackGround: React.FC = () => {
 
             // controls
 
-            controls = new OrbitControls( camera, renderer.domElement );
+            controls = new OrbitControls(camera, renderer.domElement);
             controls.autoRotate = true;
             controls.autoRotateSpeed = 1.0;
 
             // stats
 
-            stats = new Stats( {
+            stats = new Stats({
                 precision: 3,
                 horizontal: false
-            } );
-            stats.init( renderer );
-            $("#gua").add( stats.dom );
+            });
+            stats.init(renderer);
+            $("#gua").add(stats.dom);
             stats.dom.style.position = 'absolute';
 
             // gui
 
             gui = new GUI();
-            gui.add( api, 'webgpu' ).onChange( () => {
+            gui.add(api, 'webgpu').onChange(() => {
 
-                init( ! api.webgpu );
+                init(!api.webgpu);
 
-            } );
-            gui.add( api, 'count', 1, MAX_GEOMETRY_COUNT ).step( 1 ).onChange( initMesh );
-            gui.add( api, 'dynamic', 0, MAX_GEOMETRY_COUNT ).step( 1 );
+            });
+            gui.add(api, 'count', 1, MAX_GEOMETRY_COUNT).step(1).onChange(initMesh);
+            gui.add(api, 'dynamic', 0, MAX_GEOMETRY_COUNT).step(1);
 
-            gui.add( api, 'opacity', 0, 1 ).onChange( v => {
+            gui.add(api, 'opacity', 0, 1).onChange(v => {
 
-                if ( v < 1 ) {
+                if (v < 1) {
 
                     material.transparent = true;
                     material.depthWrite = false;
@@ -247,29 +243,26 @@ const BackGround: React.FC = () => {
                 material.opacity = v;
                 material.needsUpdate = true;
 
-            } );
-            gui.add( api, 'sortObjects' );
-            gui.add( api, 'perObjectFrustumCulled' );
-            gui.add( api, 'useCustomSort' );
+            });
+            gui.add(api, 'sortObjects');
+            gui.add(api, 'perObjectFrustumCulled');
+            gui.add(api, 'useCustomSort');
 
 
             // listeners
 
-            window.addEventListener( 'resize', onWindowResize );
-
-
+            window.addEventListener('resize', onWindowResize);
 
 
             function onWindowResize() {
-
                 const width = window.innerWidth;
                 const height = window.innerHeight;
-
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-
-                renderer.setSize( width, height );
-
+                if (camera) {
+                    camera.aspect = width / height
+                    camera.updateProjectionMatrix();
+                }
+                if (renderer)
+                    renderer.setSize(width, height);
             }
 
 
@@ -280,33 +273,33 @@ const BackGround: React.FC = () => {
                 controls.update();
 
 
-                if ( mesh.isBatchedMesh ) {
-
+                if (mesh && mesh.isBatchedMesh) {
                     mesh.sortObjects = api.sortObjects;
                     mesh.perObjectFrustumCulled = api.perObjectFrustumCulled;
-                    mesh.setCustomSort( api.useCustomSort ? sortFunction : null );
-
+                    mesh.setCustomSort(api.useCustomSort ? sortFunction : null);
                 }
-
-                await renderer.renderAsync( scene, camera );
-
+                // 类型断言不判null
+                renderer = renderer as WebGPURenderer
+                scene = scene as THREE.Scene;
+                camera = camera as THREE.PerspectiveCamera;
+                await renderer.renderAsync(scene, camera);
                 stats.update();
-
             }
 
             function animateMeshes() {
 
-                const loopNum = Math.min( api.count, api.dynamic );
+                const loopNum = Math.min(api.count, api.dynamic);
 
 
-                for ( let i = 0; i < loopNum; i ++ ) {
+                for (let i = 0; i < loopNum; i++) {
 
-                    const rotationMatrix = mesh.userData.rotationSpeeds[ i ];
-                    const id = ids[ i ];
-
-                    mesh.getMatrixAt( id, matrix );
-                    matrix.multiply( rotationMatrix );
-                    mesh.setMatrixAt( id, matrix );
+                    const rotationMatrix = mesh ? mesh.userData.rotationSpeeds[i] : null;
+                    const id = ids[i];
+                    if (mesh) {
+                        mesh.getMatrixAt(id, matrix);
+                        matrix.multiply(rotationMatrix);
+                        mesh.setMatrixAt(id, matrix);
+                    }
 
                 }
 
@@ -316,42 +309,48 @@ const BackGround: React.FC = () => {
 
         //
 
-        function sortFunction( list, camera ) {
+        function sortFunction(this: THREE.BatchedMesh<number>, list: {
+            start: number,
+            count: number,
+            z: number
+        }[], camera: THREE.Camera) {
 
             // initialize options
             this._options = this._options || {
-                get: el => el.z,
-                aux: new Array( this.maxInstanceCount )
+                get: el => el,
+                aux: new Array<number>(this.maxInstanceCount)
             };
 
             const options = this._options;
             options.reversed = this.material.transparent;
 
             // convert depth to unsigned 32 bit range
-            const factor = ( 2 ** 32 - 1 ) / camera.far; // UINT32_MAX / max_depth
-            for ( let i = 0, l = list.length; i < l; i ++ ) {
-
-                list[ i ].z *= factor;
-
+            const factor = (2 ** 32 - 1) / camera.far; // UINT32_MAX / max_depth
+            for (let i = 0, l = list.length; i < l; i++) {
+                list[i].z *= factor;
             }
-
             // perform a fast-sort using the hybrid radix sort function
-            radixSort( list, options );
-
+            radixSort(list.map(item=>item.z), options);
         }
 
     })
     return (
         <>
-        <div id="info">
-              <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgpu - mesh - batch
-        </div>
             <div id="backend"
-                 style={{position: "absolute" ,top: "200px",left: 0, color: "#fff", backgroundColor: "rgba(0,0,0,0.75)", padding: "5px"}}>
+                 style={{
+                     position: "absolute",
+                     top: "200px",
+                     left: 0,
+                     color: "#fff",
+                     backgroundColor: "rgba(0,0,0,0.75)",
+                     padding: "5px"
+                 }}
+            >
     Active Backend: WebGPU
            </div>
-            <div id="gua">
+            <div id="gua" className={"h-full w-full"}>
             </div>
+            <div className={"h-full w-full"}></div>
         </>
     )
 }

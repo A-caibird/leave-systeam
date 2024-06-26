@@ -4,6 +4,7 @@ import type {RadioChangeEvent} from 'antd';
 import {UserOutlined, LockFilled} from '@ant-design/icons';
 import React, {useEffect, useState} from 'react';
 import $ from 'jquery'
+import BackGround from "@/components/three.tsx";
 
 const options = [
     {
@@ -209,7 +210,8 @@ function AccountLogin() {
 function LogIn() {
     return (
         <>
-            <div className='grid grid-row-2 w-[800px] h-[600px] dark:bg-black '>
+            <BackGround/>
+            <div className='grid grid-row-2 w-[800px] h-[600px] dark:bg-black z-[10000000]'>
                 <div className='bg-green-100 flex items-center justify-center dark:bg-gray-700  '>
                     <span className='text-3xl text-black dark:text-amber-50'>
                         请假管理系统
