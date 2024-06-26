@@ -29,6 +29,9 @@ const routers = createBrowserRouter([
             }, {
                 path: "1",
                 element: <AskForLeave/>
+            }, {
+                path: "3",
+                element: <HomeCalendar/>
             }
         ]
     },

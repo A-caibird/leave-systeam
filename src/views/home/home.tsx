@@ -1,8 +1,8 @@
 import React from 'react';
-import { AppstoreOutlined, MailOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Menu, } from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
+import {AppstoreOutlined, MailOutlined} from '@ant-design/icons';
+import type {MenuProps} from 'antd';
+import {Menu,} from 'antd';
+import {Outlet, useNavigate} from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -10,15 +10,18 @@ const items: MenuItem[] = [
     {
         key: '/home/pane',
         label: '请假模块',
-        icon: <MailOutlined />,
-        children:[
+        icon: <MailOutlined/>,
+        children: [
             {
-                key:"1",
-                label:"申请请假"
+                key: "1",
+                label: "申请请假"
             },
             {
-                key:"2",
-                label:"信息面板"
+                key: "2",
+                label: "信息面板"
+            }, {
+                key: "3",
+                label: '校园日历'
             }
         ]
     },
@@ -28,16 +31,16 @@ const items: MenuItem[] = [
     {
         key: 'info',
         label: '个人信息',
-        icon: <AppstoreOutlined />,
+        icon: <AppstoreOutlined/>,
         children: [
-            { key: '5', label: 'Option 5' },
-            { key: '6', label: 'Option 6' },
+            {key: '5', label: 'Option 5'},
+            {key: '6', label: 'Option 6'},
             {
                 key: 'sub3',
                 label: 'Submenu',
                 children: [
-                    { key: '7', label: 'Option 7' },
-                    { key: '8', label: 'Option 8' },
+                    {key: '7', label: 'Option 7'},
+                    {key: '8', label: 'Option 8'},
                 ],
             },
         ],
@@ -59,9 +62,9 @@ const Home: React.FC = () => {
             <div className='bg-red-100'>
                 <Menu
                     onClick={onClick}
-                    style={{ width: 256 }}
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['/home/pane',"info"]}
+                    style={{width: 256}}
+                    defaultSelectedKeys={['3']}
+                    defaultOpenKeys={['/home/pane', "info"]}
                     mode="inline"
                     items={items}
                 />
