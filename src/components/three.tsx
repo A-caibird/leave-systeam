@@ -14,27 +14,24 @@ import $ from 'jquery';
 type GeometryType = THREE.ConeGeometry | THREE.BoxGeometry | THREE.SphereGeometry;
 const BackGround: React.FC = () => {
     useEffect(() => {
-        let camera: THREE.PerspectiveCamera | null, scene: THREE.Scene | null, renderer: WebGPURenderer | null;
+        let camera: THREE.PerspectiveCamera | null = null, scene: THREE.Scene | null = null,
+            renderer: WebGPURenderer | null = null;
         let controls: OrbitControls, stats: Stats;
         let gui;
         let geometries: GeometryType [], mesh: THREE.BatchedMesh | null, material: MeshNormalNodeMaterial;
         const ids: number[] = [];
-
         const matrix = new THREE.Matrix4();
-
         //
-
         const position = new THREE.Vector3();
         const rotation = new THREE.Euler();
         const quaternion = new THREE.Quaternion();
         const scale = new THREE.Vector3();
-
         //
         const MAX_GEOMETRY_COUNT = 20000;
         const api = {
             webgpu: true,
-            count: 1512,
-            dynamic: 1000,
+            count: 512,
+            dynamic: 800,
             sortObjects: true,
             perObjectFrustumCulled: true,
             opacity: 1,
@@ -42,7 +39,6 @@ const BackGround: React.FC = () => {
         };
         //
         init();
-
         //
         function randomizeMatrix(matrix: THREE.Matrix4) {
             // 随机生成矩阵的位置、旋转和缩放
@@ -109,7 +105,6 @@ const BackGround: React.FC = () => {
             // 初始化网格，包括设置批量网格和对应的几何体、材质等
             cleanup();
             initBatchedMesh();
-
         }
 
         function initBatchedMesh() {
@@ -122,12 +117,9 @@ const BackGround: React.FC = () => {
             const matrix = new THREE.Matrix4();
             mesh = new THREE.BatchedMesh(geometryCount, vertexCount, indexCount, createMaterial());
             mesh.userData.rotationSpeeds = [];
-
             // disable full-object frustum culling since all of the objects can be dynamic.
             mesh.frustumCulled = false;
-
             ids.length = 0;
-
             for (let i = 0; i < api.count; i++) {
 
                 const id = mesh.addGeometry(geometries[i % geometries.length]);
@@ -147,108 +139,75 @@ const BackGround: React.FC = () => {
 
 
         function init(forceWebGL = false) {
-
-            if (renderer) {
-
-                renderer.dispose();
-                controls.dispose();
-                document.body.removeChild(stats.dom);
-                document.body.removeChild(renderer.domElement);
-
-            }
-            const backend = $("backend")
+            const backend = $("#backend")
             backend.text('Active Backend: ' + (forceWebGL ? 'WebGL' : 'WebGPU'))
             // camera
-
             const aspect = window.innerWidth / window.innerHeight;
-
             camera = new THREE.PerspectiveCamera(70, aspect, 1, 100);
-            camera.position.z = 50;
-
+            camera.position.z = 10;
             // renderer
-
             renderer = new WebGPURenderer({antialias: true, forceWebGL});
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
-
             renderer.setAnimationLoop(animate);
-
             // scene
-
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0xffffff);
-
-
             if (forceWebGL) {
-
-                scene.background = new THREE.Color(0xf10000);
-
+                scene.background = new THREE.Color(0xFFFFFF);
             } else {
-
                 scene.background = new THREE.Color(0xdcfce7);
-
             }
-
-            document.body.appendChild(renderer.domElement);
-
-
+            //
+            const ele = ($('#three')[0]) as HTMLElement
+            const ch = $('canvas')
+            if (ch.length >= 1)
+                ele.removeChild(ch[0])
+            ele.appendChild(renderer.domElement)
+            //init metres
             initGeometries();
             initMesh();
-
             // controls
-
             controls = new OrbitControls(camera, renderer.domElement);
             controls.autoRotate = true;
             controls.autoRotateSpeed = 1.0;
-
             // stats
-
             stats = new Stats({
                 precision: 3,
                 horizontal: false
             });
-            stats.init(renderer);
-            $("#gua").add(stats.dom);
+            stats.init(renderer)
             stats.dom.style.position = 'absolute';
-
+            stats.dom.style.background = "green"
+            stats.dom.style.top = "2px"
+            stats.dom.style.left = "2px"
+            const a = document.getElementById("#gua")
+            if (a)
+                a.appendChild(stats.dom)
+            $("#gua").add(stats.dom);
             // gui
-
             gui = new GUI();
             gui.add(api, 'webgpu').onChange(() => {
-
                 init(!api.webgpu);
-
             });
             gui.add(api, 'count', 1, MAX_GEOMETRY_COUNT).step(1).onChange(initMesh);
             gui.add(api, 'dynamic', 0, MAX_GEOMETRY_COUNT).step(1);
-
             gui.add(api, 'opacity', 0, 1).onChange(v => {
-
                 if (v < 1) {
-
                     material.transparent = true;
                     material.depthWrite = false;
-
                 } else {
-
                     material.transparent = false;
                     material.depthWrite = true;
-
                 }
-
                 material.opacity = v;
                 material.needsUpdate = true;
-
             });
             gui.add(api, 'sortObjects');
             gui.add(api, 'perObjectFrustumCulled');
             gui.add(api, 'useCustomSort');
-
-
             // listeners
-
             window.addEventListener('resize', onWindowResize);
-
 
             function onWindowResize() {
                 const width = window.innerWidth;
@@ -261,14 +220,9 @@ const BackGround: React.FC = () => {
                     renderer.setSize(width, height);
             }
 
-
             async function animate() {
-
                 animateMeshes();
-
                 controls.update();
-
-
                 if (mesh && mesh.isBatchedMesh) {
                     mesh.sortObjects = api.sortObjects;
                     mesh.perObjectFrustumCulled = api.perObjectFrustumCulled;
@@ -283,12 +237,9 @@ const BackGround: React.FC = () => {
             }
 
             function animateMeshes() {
-                // 自定义排序函数，用于根据深度对网格进行排序
+                // 自定义动画
                 const loopNum = Math.min(api.count, api.dynamic);
-
-
                 for (let i = 0; i < loopNum; i++) {
-
                     const rotationMatrix = mesh ? mesh.userData.rotationSpeeds[i] : null;
                     const id = ids[i];
                     if (mesh) {
@@ -298,13 +249,10 @@ const BackGround: React.FC = () => {
                     }
 
                 }
-
             }
-
         }
 
         //
-
         function sortFunction(this: THREE.BatchedMesh<number>, list: {
             start: number,
             count: number,
@@ -316,7 +264,6 @@ const BackGround: React.FC = () => {
                 get: el => el,
                 aux: new Array<number>(this.maxInstanceCount)
             };
-
             const options = this._options;
             options.reversed = this.material.transparent;
 
@@ -328,7 +275,6 @@ const BackGround: React.FC = () => {
             // perform a fast-sort using the hybrid radix sort function
             radixSort(list.map(item => item.z), options);
         }
-
     })
     return (
         <>
@@ -346,7 +292,7 @@ const BackGround: React.FC = () => {
            </div>
             <div id="gua" className={"h-full w-full"}>
             </div>
-            <div className={"h-full w-full"}></div>
+            <div className={"h-full w-full"} id={"three"}></div>
         </>
     )
 }
