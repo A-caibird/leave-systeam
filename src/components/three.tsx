@@ -30,27 +30,22 @@ const BackGround: React.FC = () => {
         const scale = new THREE.Vector3();
 
         //
-
         const MAX_GEOMETRY_COUNT = 20000;
-
         const api = {
             webgpu: true,
-            count: 512,
-            dynamic: 16,
-
+            count: 1512,
+            dynamic: 1000,
             sortObjects: true,
             perObjectFrustumCulled: true,
             opacity: 1,
             useCustomSort: true,
         };
-
-
+        //
         init();
 
         //
-
         function randomizeMatrix(matrix: THREE.Matrix4) {
-
+            // 随机生成矩阵的位置、旋转和缩放
             position.x = Math.random() * 40 - 20;
             position.y = Math.random() * 40 - 20;
             position.z = Math.random() * 40 - 20;
@@ -68,7 +63,7 @@ const BackGround: React.FC = () => {
         }
 
         function randomizeRotationSpeed(rotation: THREE.Euler) {
-
+            // 随机生成旋转速度
             rotation.x = Math.random() * 0.01;
             rotation.y = Math.random() * 0.01;
             rotation.z = Math.random() * 0.01;
@@ -77,7 +72,7 @@ const BackGround: React.FC = () => {
         }
 
         function initGeometries() {
-
+            // 初始化几何体类型，如圆锥体、立方体和球体
             geometries = [
                 new THREE.ConeGeometry(1.0, 2.0),
                 new THREE.BoxGeometry(2.0, 2.0, 2.0),
@@ -87,7 +82,7 @@ const BackGround: React.FC = () => {
         }
 
         function createMaterial() {
-
+            // 创建材质，这里使用了节点材质
             if (!material) {
 
                 material = new MeshNormalNodeMaterial();
@@ -99,7 +94,7 @@ const BackGround: React.FC = () => {
         }
 
         function cleanup() {
-
+            // 清理函数，用于移除网格对象并释放资源
             if (mesh) {
                 if (mesh.parent)
                     mesh.parent.remove(mesh);
@@ -111,13 +106,14 @@ const BackGround: React.FC = () => {
         }
 
         function initMesh() {
+            // 初始化网格，包括设置批量网格和对应的几何体、材质等
             cleanup();
             initBatchedMesh();
 
         }
 
         function initBatchedMesh() {
-
+            // 初始化批量网格，设置网格数量、顶点数、索引数，并随机生成每个网格的矩阵和旋转速度
             const geometryCount = api.count;
             const vertexCount = api.count * 512;
             const indexCount = api.count * 1024;
@@ -189,7 +185,7 @@ const BackGround: React.FC = () => {
 
             } else {
 
-                scene.background = new THREE.Color(0x0000f1);
+                scene.background = new THREE.Color(0xdcfce7);
 
             }
 
@@ -287,7 +283,7 @@ const BackGround: React.FC = () => {
             }
 
             function animateMeshes() {
-
+                // 自定义排序函数，用于根据深度对网格进行排序
                 const loopNum = Math.min(api.count, api.dynamic);
 
 
@@ -314,7 +310,7 @@ const BackGround: React.FC = () => {
             count: number,
             z: number
         }[], camera: THREE.Camera) {
-
+            // 自定义排序函数，用于根据深度对网格进行排序
             // initialize options
             this._options = this._options || {
                 get: el => el,
@@ -330,7 +326,7 @@ const BackGround: React.FC = () => {
                 list[i].z *= factor;
             }
             // perform a fast-sort using the hybrid radix sort function
-            radixSort(list.map(item=>item.z), options);
+            radixSort(list.map(item => item.z), options);
         }
 
     })
