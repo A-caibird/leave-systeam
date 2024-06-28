@@ -58,7 +58,7 @@ const Home: React.FC = () => {
     };
 
     return (
-        <div className='h-svh w-svw grid grid-cols-[247px_auto] bg-blue-200 dark:bg-[#1D1D1D] '>
+        <div className='h-svh w-svw grid grid-cols-[247px_auto] bg-white dark:bg-[#1D1D1D] '>
             <div className='border-solid border-r-2 border-r-black pr-[2px] box-borde'>
                 <Menu
                     onClick={onClick}
