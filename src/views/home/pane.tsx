@@ -8,6 +8,7 @@ const datahero1 = [
 ];
 
 import { DonutChart } from '@tremor/react';
+import LeaveList from '@/components/leave_list';
 
 const datahero2 = [
     {
@@ -46,11 +47,11 @@ const Pane: React.FC = () => {
                     <div className={"flex items-center justify-around pt-[20px] pb-[5px] border-b-2 border-black"}>
                         <span>
                             <img src={"/"}
-                                 className={"rounded-full object-cover object-center  w-[100px] h-[100px] bg-green-400"}
-                                 alt={"error"}>
+                                className={"rounded-full object-cover object-center  w-[100px] h-[100px] bg-green-400"}
+                                alt={"error"}>
                             </img>
                         </span>
-                        <span className={"flex flex-col items-left"}>
+                        <span className={"flex flex-col items-left font-bold"}>
                             <span className={"flex gap-x-[20px]"}>
                                 <span>
                                     姓名
@@ -70,57 +71,57 @@ const Pane: React.FC = () => {
                         </span>
                     </div>
                     <div className={"flex items-center justify-center"}>
-                        <table className={"border-separate border-spacing-[20px]"}>
+                        <table className={"border-separate border-spacing-[20px] font-bold"}>
                             <tbody>
-                            <tr>
-                                <td>
-                                    <span>
-                                        学号
-                                    </span>
-                                </td>
-                                <td>
-                                    <span>
-                                        16608278954
-                                    </span>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <span>
+                                            学号
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            16608278954
+                                        </span>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>
-                                    <span>
-                                        手机号
-                                    </span>
-                                </td>
-                                <td>
-                                    <span>
-                                        16608278954
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        班级
-                                    </span>
-                                </td>
-                                <td>
-                                    <span>
-                                        计算机科学与技术212
-                                    </span>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <span>
+                                            手机号
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            16608278954
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>
+                                            班级
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            计算机科学与技术212
+                                        </span>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div className="grid gid-cols-2">
                     <div className="bg-blue-200  dark:bg-gray-500 dark:border-r-black border-r-[1px] col-start-1 col-end-2 flex flex-col justify-center px-[2rem]">
-                        <BarList data={datahero1} className="mx-auto max-w-sm min-w-[20rem]" />
+                        <BarList data={datahero1} className="mx-auto max-w-sm min-w-[20rem] font-bold" />
                     </div>
                     <div className="bg-blue-100 dark:bg-gray-500 min-w-[300px] col-start-2 col-end-3 ">
                         <div className="space-y-3 flex flex-col justify-center">
                             <span
-                                className="text-center block  pt-[2rem] text-black dark:text-amber-50 text-xl dark:text-dark-tremor-content">
+                                className="text-center block  pt-[2rem] text-black dark:text-amber-50  text-xl font-bold ">
                                 请假信息饼图
                             </span>
                             <div className="flex justify-center">
@@ -135,13 +136,10 @@ const Pane: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className="bg-blue-400 grid grid-rows-[1fr_3fr]">
-                <div className="bg-amber-700"></div>
-                <div className="bg-green-200">
-                </div>
+            <div className="">
+                <LeaveList />
             </div>
         </div>
     )
 };
-
 export default Pane;
