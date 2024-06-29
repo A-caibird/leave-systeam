@@ -115,7 +115,7 @@ const Pane: React.FC = () => {
                     </div>
                 </div>
                 <div className="grid gid-cols-2">
-                    <div className="bg-blue-200  dark:bg-gray-500 dark:border-r-black border-r-[1px] col-start-1 col-end-2 flex flex-col justify-center px-[2rem]">
+                    <div className="bg-blue-300  dark:bg-gray-500 dark:border-r-black border-r-[1px] col-start-1 col-end-2 flex flex-col justify-center px-[2rem]">
                         <BarList data={datahero1} className="mx-auto max-w-sm min-w-[20rem] font-bold" />
                     </div>
                     <div className="bg-blue-100 dark:bg-gray-500 min-w-[300px] col-start-2 col-end-3 ">
