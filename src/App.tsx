@@ -14,7 +14,6 @@ import { ConfigProvider, theme } from "antd"
 import zhCN from "antd/lib/locale/zh_CN";
 import BackGround from "@/components/three.tsx";
 import StudentInfoPane from "./components/student_info_pane";
-import StudentInfoList from "./components/student_infof_list";
 
 const A = withErrorCheck(Login)
 const routers = createBrowserRouter([
@@ -40,9 +39,6 @@ const routers = createBrowserRouter([
             }, {
                 path: "5",
                 element: <StudentInfoPane />
-            }, {
-                path: "6",
-                element: <StudentInfoList />
             }
         ]
     },
