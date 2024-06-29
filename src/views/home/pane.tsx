@@ -76,7 +76,7 @@ const Pane: React.FC = () => {
                                 <tr>
                                     <td>
                                         <span>
-                                            学号
+                                            {["学号", "工号"][1]}
                                         </span>
                                     </td>
                                     <td>
@@ -101,7 +101,7 @@ const Pane: React.FC = () => {
                                 <tr>
                                     <td>
                                         <span>
-                                            班级
+                                            {["班级", "职位"][1]}
                                         </span>
                                     </td>
                                     <td>
