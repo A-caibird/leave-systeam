@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react';
-import {Calendar, Col, Radio, Row, Select} from 'antd';
-import type {CalendarProps} from 'antd';
-import {createStyles} from 'antd-style';
+import React, { useEffect } from 'react';
+import { Calendar, Col, Radio, Row, Select } from 'antd';
+import type { CalendarProps } from 'antd';
+import { createStyles } from 'antd-style';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import type {Dayjs} from 'dayjs';
-import {HolidayUtil, Lunar} from 'lunar-typescript';
+import type { Dayjs } from 'dayjs';
+import { HolidayUtil, Lunar } from 'lunar-typescript';
 import $ from 'jquery'
 
-const useStyle = createStyles(({token, css, cx}) => {
+const useStyle = createStyles(({ token, css, cx }) => {
     const lunar = css`
         color: ${token.colorTextTertiary};
         font-size: ${token.fontSizeSM}px;
@@ -34,7 +34,7 @@ const useStyle = createStyles(({token, css, cx}) => {
                 max-width: 40px;
                 max-height: 40px;
                 background: transparent;
-                transition: background 300ms;
+                transition: all 300ms;
                 border-radius: ${token.borderRadiusOuter}px;
                 border: 1px solid transparent;
                 box-sizing: border-box;
@@ -101,25 +101,26 @@ const useStyle = createStyles(({token, css, cx}) => {
 });
 
 const HomeCalendar: React.FC = () => {
-    const {styles} = useStyle({test: true});
+    const { styles } = useStyle({ test: true });
     const [selectDate, setSelectDate] = React.useState<Dayjs>(dayjs());
     const [panelDateDate, setPanelDate] = React.useState<Dayjs>(dayjs());
     // 初始化日历大小,撑满格子
     // Initialize the calendar component size to fill the box
     useEffect(() => {
         $(window).on("resize", function () {
-           init()
+            init()
         });
         init()
         // 不要年月选项
-        $("div.ant-col.css-dev-only-do-not-override-zg0ahe").last().remove()
+        if ($("div.ant-col.css-dev-only-do-not-override-zg0ahe").length > 2)
+            $("div.ant-col.css-dev-only-do-not-override-zg0ahe").last().remove()
     })
-    const init = ()=>{
-        const  ScreenHeight = $(window).height();
+    const init = () => {
+        const ScreenHeight = $(window).height();
         const hh = ScreenHeight as number
-        const h=(hh-56-6*52-18)/8;
-        $('div.ant-picker-body table').css("border-spacing", "0 "+h+"px")
-        .css("border-collapse", "separate")
+        const h = (hh - 56 - 6 * 52 - 18) / 8;
+        $('div.ant-picker-body table').css("border-spacing", "0 " + h + "px")
+            .css("border-collapse", "separate")
     }
     //
     const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
@@ -201,7 +202,7 @@ const HomeCalendar: React.FC = () => {
                 onPanelChange={onPanelChange}
                 onSelect={onDateChange}
                 className={"w-full h-full"}
-                headerRender={({value, type, onChange, onTypeChange}) => {
+                headerRender={({ value, type, onChange, onTypeChange }) => {
                     const start = 0;
                     const end = 12;
                     const monthOptions = [];
@@ -231,7 +232,7 @@ const HomeCalendar: React.FC = () => {
                         });
                     }
                     return (
-                        <Row justify="end" gutter={8} style={{padding: 8}}>
+                        <Row justify="end" gutter={8} style={{ padding: 8 }}>
                             <Col>
                                 <Select
                                     size="small"
