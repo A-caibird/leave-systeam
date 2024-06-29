@@ -1,7 +1,7 @@
 import React from "react"
 import { DonutChart } from '@tremor/react';
-import LeaveList from '@/components/leave_list';
 import StudentBarChart from "@/components/Bar-Charts";
+import StudentInfoList from "./student_infof_list";
 const datahero2 = [
     {
         name: 'Noche Holding AG',
@@ -56,7 +56,7 @@ function StudentInfoPane(): React.ReactNode {
                 </div>
             </div>
             <div className="">
-                <LeaveList />
+                <StudentInfoList />
             </div>
         </div>
     )

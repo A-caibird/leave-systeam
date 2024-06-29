@@ -61,7 +61,7 @@ export default function StudentInfoList(): React.ReactNode {
                     </thead>
                     <tbody className=' '>
                         {
-                            Array.from({ length: 20 }, () => (
+                            Array.from({ length: 10 }, () => (
                                 <tr className='*:text-center   hover:scale-y-150 hover:bg-blue-600  transitio-all duration-100  '>
                                     <td >
                                         李安
@@ -80,7 +80,7 @@ export default function StudentInfoList(): React.ReactNode {
             </div>
             <div className='absolute bottom-2 translate-x-[50%]'>
                 <div className=' text-center '>
-                    <Pagination showQuickJumper defaultCurrent={2} total={500} pageSize={20} onChange={onPageChange} responsive={true} />
+                    <Pagination showQuickJumper defaultCurrent={2} total={500} pageSize={10} onChange={onPageChange} responsive={true} />
                 </div>
             </div>
         </div >
