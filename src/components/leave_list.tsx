@@ -2,11 +2,13 @@ import type { PaginationProps } from 'antd';
 import { Pagination, Switch, Tooltip } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+import LeaveDetailDrawer from '@/components/leave_drawer';
 const onPageChange: PaginationProps['onChange'] = (pageNumber) => {
     console.log('Page: ', pageNumber);
 };
 const LeaveList: React.FC = () => {
     const [checkedList, setCheckedList] = useState<boolean[]>([false, false, false])
+    const [visable, setVisable] = useState<boolean>(false)
     function onSwitchChange1(checked: boolean) {
         setCheckedList([checked, false, false])
     }
@@ -15,6 +17,12 @@ const LeaveList: React.FC = () => {
     }
     function onSwitchChange3(checked: boolean) {
         setCheckedList([false, false, checked])
+    }
+    function onReviewDetail() {
+        setVisable(true)
+    }
+    function onCloseDrawer() {
+        setVisable(false)
     }
     return (
         <div className="bg-blue-200 dark:bg-slate-500 w-full h-full relative">
@@ -71,8 +79,8 @@ const LeaveList: React.FC = () => {
                     <tbody className=' '>
                         {
                             Array.from({ length: 10 }, (_, index) => (
-                                <Tooltip title="点击查看详情" color="purple">
-                                    <tr className='*:text-center   hover:scale-y-150 hover:bg-blue-600  transitio-all duration-100  '>
+                                <Tooltip title="点击查看详情" color="purple" >
+                                    <tr className='*:text-center   hover:scale-y-150 hover:bg-blue-600  transitio-all duration-100' onClick={onReviewDetail}>
                                         <td >
                                             2022-01-20
                                         </td>
@@ -88,6 +96,7 @@ const LeaveList: React.FC = () => {
                         }
                     </tbody>
                 </table>
+                <LeaveDetailDrawer visable={visable} onClose={onCloseDrawer} />
             </div>
             <div className='absolute bottom-2 translate-x-[50%]'>
                 <div className=' text-center '>
