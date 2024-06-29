@@ -51,7 +51,7 @@ export default function StudentBarChart() {
     const [showComparison, setShowComparison] = useState(false);
     return (
         <>
-            <Card className="sm:mx-auto sm:max-w-2xl bg-green-200">
+            <Card className="sm:mx-auto sm:max-w-2xl lg:min-w-[700px] min-w-[462px] w-full bg-green-200 !m-0">
                 <h3 className="ml-1 mr-1 font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
                     班级人数表
                 </h3>
@@ -64,7 +64,7 @@ export default function StudentBarChart() {
                     colors={showComparison ? ['cyan', 'blue'] : ['blue']}
                     valueFormatter={valueFormatter}
                     yAxisWidth={45}
-                    className="mt-6 hidden h-40 sm:block"
+                    className="mt-6 hidden h-40 sm:block !w-full"
                 />
                 <BarChart
                     data={data}
@@ -75,7 +75,7 @@ export default function StudentBarChart() {
                     colors={showComparison ? ['cyan', 'blue'] : ['blue']}
                     valueFormatter={valueFormatter}
                     showYAxis={false}
-                    className="mt-4 h-56 sm:hidden"
+                    className="mt-4 h-56 sm:hidden w-full"
                 />
                 <Divider />
                 <div className="mb-2 flex items-center space-x-3">
