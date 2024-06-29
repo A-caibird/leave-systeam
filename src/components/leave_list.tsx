@@ -1,5 +1,5 @@
 import type { PaginationProps } from 'antd';
-import { Pagination, Switch } from 'antd';
+import { Pagination, Switch, Tooltip } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 const onPageChange: PaginationProps['onChange'] = (pageNumber) => {
@@ -71,17 +71,19 @@ const LeaveList: React.FC = () => {
                     <tbody className=' '>
                         {
                             Array.from({ length: 10 }, (_, index) => (
-                                <tr className='*:text-center   hover:scale-y-150 hover:bg-blue-600  transitio-all duration-100  '>
-                                    <td >
-                                        2022-01-20
-                                    </td>
-                                    <td>
-                                        病假
-                                    </td>
-                                    <td>
-                                        已通过{index}
-                                    </td>
-                                </tr>
+                                <Tooltip title="点击查看详情" color="purple">
+                                    <tr className='*:text-center   hover:scale-y-150 hover:bg-blue-600  transitio-all duration-100  '>
+                                        <td >
+                                            2022-01-20
+                                        </td>
+                                        <td>
+                                            病假
+                                        </td>
+                                        <td>
+                                            已通过{index}
+                                        </td>
+                                    </tr>
+                                </Tooltip>
                             ))
                         }
                     </tbody>
