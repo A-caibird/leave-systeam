@@ -225,13 +225,13 @@ function LogIn() {
     return (
         <>
             <BackGround />
-            <div className='grid grid-row-2 w-[800px] h-[600px] dark:bg-black z-[10000000] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]'>
+            <div className='grid grid-row-2 w-[800px] h-[600px] dark:bg-black glass z-[10000000] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]'>
                 <div className='bg-green-100 flex items-center justify-center dark:bg-gray-700  '>
                     <span className='text-3xl text-black dark:text-amber-50'>
                         请假管理系统
                     </span>
                 </div>
-                <div className='bg-green-300 dark:bg-gray-200 h-[30rem]'>
+                <div className='bg-green-300 dark:bg-gray-200 h-[30rem]' style={{ background: "linear-gradient(135deg, #f0f0f5 0%, #cfcfcf 100%);" }}>
                     <TabComponent Tabs={tabs} />
                 </div>
             </div>
