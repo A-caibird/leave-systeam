@@ -17,7 +17,7 @@ const LeaveList: React.FC = () => {
         setCheckedList([false, false, checked])
     }
     return (
-        <div className="bg-blue-200 dark:bg-slate-500 w-full h-full">
+        <div className="bg-blue-200 dark:bg-slate-500 w-full h-full relative">
             <div>
                 <table className='dark:text-white text-black w-full border-separate border-[0px] *:border-2 [&>:not(thead)]:bg-red-50 [&>:not(thead)]:dark:bg-slate-400'>
                     <thead>

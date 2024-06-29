@@ -30,19 +30,11 @@ const items: MenuItem[] = [
     },
     {
         key: 'info',
-        label: '个人信息',
+        label: ['个人信息', '学生信息管理'][1],
         icon: <AppstoreOutlined />,
         children: [
-            { key: '5', label: 'Option 5' },
-            { key: '6', label: 'Option 6' },
-            {
-                key: 'sub3',
-                label: 'Submenu',
-                children: [
-                    { key: '7', label: 'Option 7' },
-                    { key: '8', label: 'Option 8' },
-                ],
-            },
+            { key: '5', label: ['Option 5', '信息面板'][1] },
+            { key: '6', label: ['Option 6', '学生信息'][1] },
         ],
     },
     {
