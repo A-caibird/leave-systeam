@@ -12,43 +12,94 @@ import HomeCalendar from "@/components/calendar.tsx";
 import AskForLeave from "@/views/home/ask_for_leave.tsx";
 import { ConfigProvider, theme } from "antd"
 import zhCN from "antd/lib/locale/zh_CN";
-import BackGround from "@/components/three.tsx";
 import StudentInfoPane from "./components/student_info_pane";
-
+import { motion } from 'framer-motion';
 const A = withErrorCheck(Login)
 const routers = createBrowserRouter([
     {
         path: "/",
-        element: <A />
+        element: <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+                duration: 1
+            }}
+        ><A /></motion.div>
     }, {
         path: "/home",
-        element: <Home />,
+        element: <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+                duration: 1
+            }}
+        ><Home /></motion.div>,
         children: [
             {
                 index: true,
-                element: <HomeCalendar />,
+                element: <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        duration: 1
+                    }}
+                ><HomeCalendar /></motion.div>,
             }, {
                 path: "2",
-                element: <Pane />
+                element: <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        duration: 1
+                    }}
+                ><Pane /></motion.div>
             }, {
                 path: "1",
-                element: <AskForLeave />
+                element: <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        duration: 1
+                    }}
+                ><AskForLeave /></motion.div>
             }, {
                 path: "3",
-                element: <HomeCalendar />
+                element: <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        duration: 1
+                    }}
+                ><HomeCalendar /></motion.div>
             }, {
                 path: "5",
-                element: <StudentInfoPane />
+                element: <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        duration: 1
+                    }}
+                ><StudentInfoPane /></motion.div>
             }
         ]
     },
     {
-        path: "/three",
-        element: <BackGround />
-    },
-    {
         path: "*",
-        element: <Error />
+        element: <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+                duration: 1
+            }}
+        ><Error /></motion.div>
     }
 ]);
 
