@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
-import type { CascaderProps, DatePickerProps } from 'antd';
-import { Cascader, message } from 'antd';
+import React, {useEffect, useState} from "react"
+import type {CascaderProps, DatePickerProps} from 'antd';
+import {Cascader, message} from 'antd';
 import styled from "styled-components";
-import { DatePicker } from 'antd';
+import {DatePicker} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import FileUpload from "@/components/fileUpload.tsx";
 import $ from 'jquery'
@@ -67,31 +67,56 @@ const Item = styled.div`
 `
 
 const AskForLeave: React.FC = () => {
-    useEffect(() => {
-        $('div.ant-picker.ant-picker-outlined.css-dev-only-do-not-override-zg0ahe').
-            css("width", "184px");
-    })
-    const [leaveInfo, setLeaveInfo] = useState<{ StartTime: Date, EndTime: Date, ApplicantId: string, Reason: string, Status: number, Type: string, Duration: number }>(
-        { StartTime: new Date(), EndTime: new Date(), ApplicantId: "", Reason: "", Status: 1, Type: "病假", Duration: 0 }
+    const [leaveInfo, setLeaveInfo] = useState<{
+        StartTime: Date,
+        EndTime: Date,
+        ApplicantId: string,
+        Reason: string,
+        Status: number,
+        Type: string,
+        Duration: number
+    }>(
+        {StartTime: new Date(), EndTime: new Date(), ApplicantId: "", Reason: "", Status: 1, Type: "病假", Duration: 1}
     )
+    useEffect(() => {
+        $('div.ant-picker.ant-picker-outlined.css-dev-only-do-not-override-zg0ahe').css("width", "184px");
+    }, [leaveInfo])
     const [detailCheck, setDetailCheck] = useState<boolean>(false)
-    const onChangeStartDataPick: DatePickerProps['onChange'] = (date) => {
-        setLeaveInfo(prev => ({
-            ...prev,
-            StartTime: date.toDate()
-        }))
-    }
-    const onChangeEndDataPick: DatePickerProps['onChange'] = (date) => {
-        if (date.diff(dayjs(leaveInfo.StartTime), 'day') > 0) {
+    const onChangeStartDataPick: DatePickerProps['onChange'] = async (date) => {
+        const duration = dayjs(leaveInfo.EndTime).diff(dayjs(date), 'day') + 1
+        if ( dayjs(leaveInfo.EndTime).isAfter(dayjs(date))) {
             setLeaveInfo(prev => ({
                 ...prev,
-                Duration: date.diff(dayjs(leaveInfo.StartTime), 'day'),
-                EndTime: date.toDate()
+                Duration: duration,
+                StartTime: date.toDate()
+            }))
+        } else {
+            setLeaveInfo(prev => ({
+                ...prev,
+                Duration: -100,
+                StartTime: date.toDate()
             }))
         }
-        else
-            message.warning("结束时间不能晚于开始时间!")
-    };
+    }
+
+    const onChangeEndDataPick: DatePickerProps['onChange'] = async (date) => {
+            const duration: number = date.diff(dayjs(leaveInfo.StartTime), 'day') + 1;
+            if (date.isAfter(leaveInfo.StartTime) || date.isSame(leaveInfo.StartTime)) {
+                setLeaveInfo(prev => ({
+                    ...prev,
+                    Duration: duration,
+                    EndTime: date.toDate()
+                }))
+            } else {
+                setLeaveInfo(prev => ({
+                    ...prev,
+                    Duration: -100,
+                    EndTime: date.toDate()
+                }))
+                await message.warning("结束时间不能晚于开始时间!")
+            }
+    }
+
     const onChangeCascader: CascaderProps<Option>['onChange'] = (value) => {
         console.log(value);
     };
@@ -102,6 +127,7 @@ const AskForLeave: React.FC = () => {
             Reason: e.target.value
         }))
     }
+
     async function onSubmit() {
         if (detailCheck) {
             message.warning("结束时间不能晚于开始时间!")
@@ -118,9 +144,11 @@ const AskForLeave: React.FC = () => {
             }
         }
     }
+
     return (
         <div className={"bg-red-100 dark:bg-[#333333] w-full h-full absolute min-w-[643px] "}>
-            <div className={"text-black   dark:text-amber-50  text-[2rem] w-full p-[3rem] text-center flex justify-center "}>
+            <div
+                className={"text-black   dark:text-amber-50  text-[2rem] w-full p-[3rem] text-center flex justify-center "}>
                 <span>请假信息表</span>
             </div>
             <Item>
@@ -129,7 +157,7 @@ const AskForLeave: React.FC = () => {
                 </span>
                 <span className={"absolute right-[17%]"}>
                     <Cascader defaultValue={['zhejiang', 'hangzhou', 'xihu']} options={options}
-                        onChange={onChangeCascader} />
+                              onChange={onChangeCascader}/>
                 </span>
             </Item>
             <Item>
@@ -137,7 +165,7 @@ const AskForLeave: React.FC = () => {
                     开始时间
                 </span>
                 <span className={"absolute right-[17%]"}>
-                    <DatePicker onChange={onChangeStartDataPick} />
+                    <DatePicker onChange={onChangeStartDataPick} defaultValue={dayjs(new Date())}/>
                 </span>
             </Item>
 
@@ -146,14 +174,15 @@ const AskForLeave: React.FC = () => {
                     结束时间
                 </span>
                 <span className={"absolute right-[17%]"}>
-                    <DatePicker onChange={onChangeEndDataPick} />
+                    <DatePicker onChange={onChangeEndDataPick} defaultValue={dayjs(new Date())}/>
                 </span>
             </Item>
             <Item>
                 <span className={"text-black dark:text-amber-50  left-[17%] absolute"}>
                     请假时长
                 </span>
-                <span className={"absolute right-[17%] text-black dark:text-white w-[184px] border-1 bg-white rounded-md"}>
+                <span
+                    className={"absolute right-[17%] dark:text-white w-[184px] border-1 bg-white rounded-md "+ (leaveInfo.Duration < 0 ? "text-[red]":"text-black")}>
                     {leaveInfo.Duration}天
                 </span>
             </Item>
@@ -163,7 +192,9 @@ const AskForLeave: React.FC = () => {
                         <span>请假详细事由</span>
                     </div>
                     <div className={""}>
-                        <TextArea rows={10} placeholder="最多200字,最少5个字" maxLength={200} className={"w-full h-[200px]  border-[2px] invalid:text-red-700 invalid:text-xl invalid:border-[red] transition-all"} minLength={5} onChange={onDetailChange} autoCorrect="true" />
+                        <TextArea rows={10} placeholder="最多200字,最少5个字" maxLength={200}
+                                  className={"w-full h-[200px]  border-[2px] invalid:text-red-700 invalid:text-xl invalid:border-[red] transition-all"}
+                                  minLength={5} onChange={onDetailChange} autoCorrect="true"/>
                     </div>
                 </div>
                 <div className={"bg-[white] dark:bg-[#333333]"}>
@@ -173,12 +204,14 @@ const AskForLeave: React.FC = () => {
                         </span>
                     </div>
                     <div className={""}>
-                        <FileUpload />
+                        <FileUpload/>
                     </div>
                 </div>
             </div>
-            <div className={"w-full absolute bottom-[10%] flex items-center justify-center left-[50%] translate-x-[-50%]"}>
-                <span className={"text-black glass text-2xl px-[20px] py-[5px] rounded-2xl border-2 border-red-200"} onClick={onSubmit}>
+            <div
+                className={"w-full absolute bottom-[10%] flex items-center justify-center left-[50%] translate-x-[-50%]"}>
+                <span className={"text-black glass text-2xl px-[20px] py-[5px] rounded-2xl border-2 border-red-200"}
+                      onClick={onSubmit}>
                     申请请假
                 </span>
             </div>
