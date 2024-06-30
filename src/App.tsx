@@ -14,6 +14,9 @@ import { ConfigProvider, theme } from "antd"
 import zhCN from "antd/lib/locale/zh_CN";
 import StudentInfoPane from "./components/student_info_pane";
 import { motion } from 'framer-motion';
+import TeacherList from "@/components/teacher_manage.tsx";
+import { Provider } from 'react-redux';
+import store     from "@/store";
 const A = withErrorCheck(Login)
 const routers = createBrowserRouter([
     {
@@ -87,6 +90,16 @@ const routers = createBrowserRouter([
                         duration: 1
                     }}
                 ><StudentInfoPane /></motion.div>
+            },{
+                path: "7",
+                element: <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        duration: 1
+                    }}
+                ><TeacherList /></motion.div>
             }
         ]
     },
@@ -122,7 +135,9 @@ export const App: React.FC = () => {
     return (
         <>
             <ConfigProvider locale={zhCN} theme={{ algorithm: dark ? theme.darkAlgorithm : undefined }}>
+                <Provider store={store}>
                 <RouterProvider router={routers} />
+                </Provider>
             </ConfigProvider>
         </>
     )
