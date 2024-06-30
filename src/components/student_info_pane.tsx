@@ -1,4 +1,7 @@
-import React from "react"
+import React,{useEffect} from "react"
+import { useSelector, useDispatch } from 'react-redux';
+import $ from 'jquery';
+import {generateUniqueId} from "@/store";
 import { DonutChart } from '@tremor/react';
 import StudentBarChart from "@/components/Bar-Charts";
 import StudentInfoList from "./student_info_list";
@@ -32,8 +35,17 @@ const datahero2 = [
 const dataFormatter = (number: number) =>
     `$ ${Intl.NumberFormat('us').format(number).toString()}`;
 function StudentInfoPane(): React.ReactNode {
+    const dispatch = useDispatch();
+    const uniqueId = useSelector((state:{uniqueId:number}) => state.uniqueId);
+    useEffect(() => {
+        dispatch(generateUniqueId());
+    }, [dispatch]);
+    useEffect(() => {
+        console.log(uniqueId,window.innerHeight);
+        $(`#id-${uniqueId}`).height(window.innerHeight)
+    }, [uniqueId]);
     return (
-        <div className="w-full h-full bg-blue-200 dark:bg-slate-500 grid grid-rows-[2fr_4fr]">
+        <div className="w-full bg-blue-200 dark:bg-slate-500 grid grid-rows-[2fr_4fr]" id={`id-${uniqueId}`}>
             <div className="grid grid-cols-[2fr_1fr] w-full h-full">
                 <div className="!max-h-[400px] ">
                     <StudentBarChart />
