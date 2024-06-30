@@ -25,7 +25,7 @@ const LeaveList: React.FC = () => {
         setVisable(false)
     }
     return (
-        <div className="bg-blue-200 dark:bg-slate-500 w-full h-full relative">
+        <div className="w-full h-full bg-blue-200 dark:bg-slate-500 relative">
             <div>
                 <table className='dark:text-white text-black w-full border-separate border-[0px] *:border-2 [&>:not(thead)]:bg-red-50 [&>:not(thead)]:dark:bg-slate-400'>
                     <thead>
@@ -98,8 +98,8 @@ const LeaveList: React.FC = () => {
                 </table>
                 <LeaveDetailDrawer visable={visable} onClose={onCloseDrawer} />
             </div>
-            <div className='absolute bottom-2 translate-x-[50%]'>
-                <div className=' text-center '>
+            <div className='w-full flex justify-center items-center'>
+                <div className='w-full mt-[50px] flex justify-center items-center'>
                     <Pagination showQuickJumper defaultCurrent={2} total={500} pageSize={20} onChange={onPageChange} responsive={true} />
                 </div>
             </div>

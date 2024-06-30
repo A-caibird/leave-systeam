@@ -49,7 +49,7 @@ const onChange: CascaderProps<Option>['onChange'] = (value) => {
 export default function StudentInfoList(): React.ReactNode {
     return (
 
-        <div className="bg-blue-200 dark:bg-slate-500 w-full h-full relative">
+        <div className="bg-blue-200 dark:bg-slate-500 w-full absolute">
             <div>
                 <table className='dark:text-white text-black w-full border-separate border-[0px] *:border-2 [&>:not(thead)]:bg-red-50 [&>:not(thead)]:dark:bg-slate-400'>
                     <thead>
@@ -78,7 +78,7 @@ export default function StudentInfoList(): React.ReactNode {
                     </tbody>
                 </table>
             </div>
-            <div className='absolute bottom-2 translate-x-[50%]'>
+            <div className='flex w-full justify-center mt-[10rem]'>
                 <div className=' text-center '>
                     <Pagination showQuickJumper defaultCurrent={2} total={500} pageSize={10} onChange={onPageChange} responsive={true} />
                 </div>
