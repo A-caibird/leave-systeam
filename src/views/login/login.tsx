@@ -1,11 +1,13 @@
-import { TabComponent, TabProps } from '@/components/tab.tsx';
-import { Button, Input, Select, Space, Radio } from 'antd';
-import { RadioChangeEvent, message } from 'antd';
-import { UserOutlined, LockFilled } from '@ant-design/icons';
-import React, { useEffect, useState } from 'react';
+import {TabComponent, TabProps} from '@/components/tab.tsx';
+import {Button, Input, Select, Space, Radio} from 'antd';
+import {RadioChangeEvent, message} from 'antd';
+import {UserOutlined, LockFilled} from '@ant-design/icons';
+import React, {useEffect, useState} from 'react';
 import $ from 'jquery'
 import BackGround from "@/components/three.tsx";
 import Fetch from '@/utils/api/fetch';
+import {useNavigate}  from "react-router-dom";
+
 const options = [
     {
         value: 'China',
@@ -21,18 +23,18 @@ const tabs: TabProps[] = [
     {
         label: '手机号登录', name: 'first', content:
             <div className=''>
-                <PhoneLogin />
+                <PhoneLogin/>
             </div>
     },
     {
         label: '工号登录', name: 'second', content:
             <div>
-                <AccountLogin />
+                <AccountLogin/>
             </div>
     },
 ];
 
-function SelectIdentify({ select }: { select: (val: number) => void }) {
+function SelectIdentify({select}: { select: (val: number) => void }) {
     const [value, setValue] = useState(0);
     const onChange = (e: RadioChangeEvent) => {
         const a = e.target.value
@@ -42,7 +44,7 @@ function SelectIdentify({ select }: { select: (val: number) => void }) {
     }
     return (
         <Radio.Group onChange={onChange} value={value} defaultValue={value}
-            className={"flex justify-around bg-blue-100 w-[251px] dark:bg-black"}>
+                     className={"flex justify-around bg-blue-100 w-[251px] dark:bg-black"}>
             <Radio value={2}>管理员</Radio>
             <Radio value={1}>老师</Radio>
             <Radio value={0}>学生</Radio>
@@ -111,13 +113,13 @@ function PhoneLogin() {
     return (
         <>
             <Space direction="vertical" size="middle">
-                <Space.Compact style={{ width: '100%', }}>
-                    <Select defaultValue="+86" options={options} className='w-[10rem]' />
-                    <Input defaultValue="" placeholder='请输入手机号' value={userInfo.phone} onChange={PhoneChange} />
+                <Space.Compact style={{width: '100%',}}>
+                    <Select defaultValue="+86" options={options} className='w-[10rem]'/>
+                    <Input defaultValue="" placeholder='请输入手机号' value={userInfo.phone} onChange={PhoneChange}/>
                 </Space.Compact>
-                <Space.Compact style={{ width: "100%", }}>
+                <Space.Compact style={{width: "100%",}}>
                     <Input placeholder='请输入验证码' addonBefore="获取验证码" value={userInfo.code}
-                        onChange={CodeChange} />
+                           onChange={CodeChange}/>
                 </Space.Compact>
                 <Space.Compact>
                     <div className="w-[109px] bg-blue-400 text-center border-r-blue-950 border-r-2 rounded-l-full">
@@ -125,9 +127,9 @@ function PhoneLogin() {
                             选择身份
                         </span>
                     </div>
-                    <SelectIdentify select={onSelect} />
+                    <SelectIdentify select={onSelect}/>
                 </Space.Compact>
-                <Space.Compact style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <Space.Compact style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <Button onClick={submit}>提交</Button>
                     <Button onClick={reset}>重置</Button>
                 </Space.Compact>
@@ -145,7 +147,7 @@ function AccountLogin() {
             role: 0
         }
     )
-
+    const navigate = useNavigate();
     async function submit() {
         console.log(userInfo)
         const resp = await Fetch("/api/login/account", {
@@ -153,9 +155,11 @@ function AccountLogin() {
                 "Content-Type": "application/json"
             }, body: JSON.stringify(userInfo)
         })
-        alert(resp.status)
         if (resp.status === 200) {
             message.info("登录成功!")
+            const body = await resp.json()
+            sessionStorage.setItem("UserInfo", JSON.stringify(body))
+            navigate("/home")
         } else if (resp.status === 401) {
             message.info(await resp.text())
         }
@@ -170,9 +174,9 @@ function AccountLogin() {
 
     function passwordChange(e: React.ChangeEvent<HTMLInputElement>) {
         setUserInfo(prev => ({
-            ...prev,
-            password: e.target.value
-        })
+                ...prev,
+                password: e.target.value
+            })
         )
     }
 
@@ -196,13 +200,13 @@ function AccountLogin() {
     return (
         <>
             <Space direction="vertical" size="middle">
-                <Space.Compact style={{ width: '100%' }}>
-                    <Input defaultValue="" placeholder='请输入工号' prefix={<UserOutlined />} addonBefore="工号"
-                        value={userInfo.account} onChange={accountChange} />
+                <Space.Compact style={{width: '100%'}}>
+                    <Input defaultValue="" placeholder='请输入工号' prefix={<UserOutlined/>} addonBefore="工号"
+                           value={userInfo.account} onChange={accountChange}/>
                 </Space.Compact>
-                <Space.Compact style={{ width: "100%", }}>
-                    <Input placeholder='请输入密码' addonBefore="密码" prefix={<LockFilled />} value={userInfo.password}
-                        onChange={passwordChange} />
+                <Space.Compact style={{width: "100%",}}>
+                    <Input placeholder='请输入密码' addonBefore="密码" prefix={<LockFilled/>} value={userInfo.password}
+                           onChange={passwordChange}/>
                 </Space.Compact>
                 <Space.Compact>
                     <div className="w-[109px]  text-center bg-blue-400 border-r-blue-950 border-r-2 rounded-l-full">
@@ -210,9 +214,9 @@ function AccountLogin() {
                             选择身份
                         </span>
                     </div>
-                    <SelectIdentify select={onSelect} />
+                    <SelectIdentify select={onSelect}/>
                 </Space.Compact>
-                <Space.Compact style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <Space.Compact style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <Button onClick={submit}>提交</Button>
                     <Button onClick={reset}>重置</Button>
                 </Space.Compact>
@@ -224,15 +228,17 @@ function AccountLogin() {
 function LogIn() {
     return (
         <>
-            <BackGround />
-            <div className='grid grid-row-2 w-[800px] h-[600px] dark:bg-black glass z-[10000000] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]'>
+            <BackGround/>
+            <div
+                className='grid grid-row-2 w-[800px] h-[600px] dark:bg-black glass z-[10000000] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]'>
                 <div className='bg-green-100 flex items-center justify-center dark:bg-gray-700  '>
                     <span className='text-3xl text-black dark:text-amber-50'>
                         请假管理系统
                     </span>
                 </div>
-                <div className='bg-green-300 dark:bg-gray-200 h-[30rem]' style={{ background: "linear-gradient(135deg, #f0f0f5 0%, #cfcfcf 100%);" }}>
-                    <TabComponent Tabs={tabs} />
+                <div className='bg-green-300 dark:bg-gray-200 h-[30rem]'
+                     style={{background: "linear-gradient(135deg, #f0f0f5 0%, #cfcfcf 100%);"}}>
+                    <TabComponent Tabs={tabs}/>
                 </div>
             </div>
         </>
