@@ -5,7 +5,7 @@ import $ from 'jquery';
 import {generateUniqueId} from "@/store";
 export default function TeacherList():React.ReactNode{
     const dispatch = useDispatch();
-    const uniqueId = useSelector(state => state.uniqueId);
+    const uniqueId = useSelector((state:{uniqueId:number}) => state.uniqueId);
     useEffect(() => {
         // 生成唯一ID
         dispatch(generateUniqueId());
