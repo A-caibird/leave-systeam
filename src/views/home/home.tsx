@@ -1,51 +1,68 @@
-import React, { useState } from 'react';
-import { AppstoreOutlined, MailOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Menu, Modal } from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {AppstoreOutlined, MailOutlined} from '@ant-design/icons';
+import {MenuProps, message} from 'antd';
+import {Menu, Modal} from 'antd';
+import {Outlet, useNavigate} from 'react-router-dom';
 import $ from 'jquery'
 import Fetch from '@/utils/api/fetch';
 
 type MenuItem = Required<MenuProps>['items'][number];
+const Home: React.FC = () => {
+    const userInfo = JSON.parse(sessionStorage.getItem("UserInfo") as string) as {
+        gid: string;
+        id: string;
+        name: string;
+        phone: string;
+        token: string;
+        age: number;
+        gname: string;
+        sexy: string;
+        role:number;
+    }
+//
+    const studentMenu: MenuItem[] = [
+        userInfo.role === 0 ? {
+            key: "1",
+            label: "申请请假"
+        } : null,
+        {
+            key: "2",
+            label: "信息面板"
+        },
+        {
+            key: "3",
+            label: '校园日历'
+        }
+    ].filter(Boolean) as MenuItem[];
 
-const items: MenuItem[] = [
-    {
-        key: '/home/pane',
-        label: '请假模块',
-        icon: <MailOutlined />,
-        children: [
-            {
-                key: "1",
-                label: "申请请假"
+
+    const items: MenuItem[] = [
+        {
+            key: '/home/pane',
+            label: '请假模块',
+            icon: <MailOutlined/>,
+            children: studentMenu
+        },
+        {
+            type: 'divider',
+        },
+
+    ];
+    if (userInfo.role=== 2)
+        items.push({
+                key: 'info',
+                label: ['个人信息', '人员管理'][1],
+                icon: <AppstoreOutlined/>,
+                children: [
+                    {key: '5', label: ['Option 5', '学生信息面板'][1]},
+                    {key: "6", label: ['Option5', "导入学生"][1]},
+                    {key: "7", label: ['Option5', "管理老师"][1]}
+                ],
             },
             {
-                key: "2",
-                label: "信息面板"
-            }, {
-                key: "3",
-                label: '校园日历'
-            }
-        ]
-    },
-    {
-        type: 'divider',
-    },
-    {
-        key: 'info',
-        label: ['个人信息', '人员管理'][1],
-        icon: <AppstoreOutlined />,
-        children: [
-            { key: '5', label: ['Option 5', '学生信息面板'][1] },
-            { key: "6", label: ['Option5', "导入学生"][1] },
-            { key: "7", label: ['Option5', "管理老师"][1] }
-        ],
-    },
-    {
-        type: 'divider',
-    }
-];
-
-const Home: React.FC = () => {
+                type: 'divider',
+            })
+    //
     const navigate = useNavigate();
     const onClick: MenuProps['onClick'] = (e) => {
         console.log(e);
@@ -62,9 +79,10 @@ const Home: React.FC = () => {
     };
 
     const handleOk = () => {
-        const $fileInput = $('<input/>', {
+        const $fileInput =   $('#studentsFile').length != 0 ? $('#studentsFile'):
+            $('<input/>', {
             type: 'file',
-            id: "fileInput",
+            id: "studentsFile",
             style: 'display:none',
             accept: '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
             multiple: false
@@ -76,12 +94,21 @@ const Home: React.FC = () => {
             //
             const form = new FormData()
             form.append('file', file)
+            //
+            console.log(form)
             try {
-                const resp = await Fetch("/a", {
+                const resp = await Fetch("/api/students/import", {
                     method: "POST",
                     body: form,
                 })
                 console.log(resp.status)
+                if (resp.status === 200) {
+                    message.info("导入成功!")
+                } else if (resp.status == 400) {
+                    message.error("文件内容错误!")
+                } else {
+                    message.error("服务器内部错误!")
+                }
             } catch (error) {
                 console.log(error)
             } finally {
@@ -89,8 +116,6 @@ const Home: React.FC = () => {
                 $in.remove()
             }
         })
-        // remove dom when cancle select file
-        $fileInput?.remove()
         setIsModalOpen(false);
     };
 
@@ -103,7 +128,7 @@ const Home: React.FC = () => {
             <div className='border-solid border-r-2 border-r-black pr-[2px] box-border w-full h-full'>
                 <Menu
                     onClick={onClick}
-                    style={{ width: 256 }}
+                    style={{width: 256}}
                     defaultSelectedKeys={['3']}
                     defaultOpenKeys={['/home/pane', "info"]}
                     mode="inline"
