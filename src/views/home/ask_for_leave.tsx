@@ -91,6 +91,7 @@ const AskForLeave: React.FC = () => {
                 StartTime: date.toDate()
             }))
         } else {
+            await message.warning("开始时间不能晚于结束时间!")
             setLeaveInfo(prev => ({
                 ...prev,
                 Duration: -100,
@@ -113,7 +114,7 @@ const AskForLeave: React.FC = () => {
                     Duration: -100,
                     EndTime: date.toDate()
                 }))
-                await message.warning("结束时间不能晚于开始时间!")
+                await message.warning("结束时间不能早于开始时间!")
             }
     }
 
