@@ -74,7 +74,7 @@ export default function TeacherList():React.ReactNode{
                     <tbody className=' '>
                     {
                         Array.from({length: 10}, () => (
-                            <tr className='*:text-center   hover:scale-y-150 hover:bg-blue-600  transitio-all duration-100  '>
+                            <tr className='*:text-center   hover:scale-110  hover:bg-blue-600  transitio-all duration-100  '>
                                 <td>
                                     李安
                                 </td>
