@@ -100,7 +100,7 @@ const Home: React.FC = () => {
 
     return (
         <div className='h-svh w-svw grid grid-cols-[247px_auto] bg-white dark:bg-[#1D1D1D] '>
-            <div className='border-solid border-r-2 border-r-black pr-[2px] box-borde'>
+            <div className='border-solid border-r-2 border-r-black pr-[2px] box-border w-full h-full'>
                 <Menu
                     onClick={onClick}
                     style={{ width: 256 }}
@@ -111,7 +111,7 @@ const Home: React.FC = () => {
                     className={""}
                 />
             </div>
-            <div className='w-full h-svh'>
+            <div className='w-full h-full relative'>
                 <Outlet></Outlet>
             </div>
             <Modal title="导入学生信息" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>

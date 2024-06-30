@@ -119,7 +119,7 @@ const AskForLeave: React.FC = () => {
         }
     }
     return (
-        <div className={"bg-white dark:bg-[#333333] w-full h-full relative"}>
+        <div className={"bg-red-100 dark:bg-[#333333] w-full h-full absolute min-w-[643px] "}>
             <div className={"text-black   dark:text-amber-50  text-[2rem] w-full p-[3rem] text-center flex justify-center "}>
                 <span>请假信息表</span>
             </div>
@@ -177,8 +177,8 @@ const AskForLeave: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className={"w-full absolute bottom-[40px] flex items-center justify-center"}>
-                <span className={"text-black bg-red-500 px-[20px] py-[5px] rounded-2xl"} onClick={onSubmit}>
+            <div className={"w-full absolute bottom-[10%] flex items-center justify-center left-[50%] translate-x-[-50%]"}>
+                <span className={"text-black glass text-2xl px-[20px] py-[5px] rounded-2xl border-2 border-red-200"} onClick={onSubmit}>
                     申请请假
                 </span>
             </div>
