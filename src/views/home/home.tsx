@@ -17,9 +17,10 @@ const Home: React.FC = () => {
         age: number;
         gname: string;
         sexy: string;
-        role:number;
+        role: number;
     }
 //
+
     const studentMenu: MenuItem[] = [
         userInfo.role === 0 ? {
             key: "1",
@@ -48,15 +49,16 @@ const Home: React.FC = () => {
         },
 
     ];
-    if (userInfo.role=== 2)
+    if (userInfo.role === 2)
         items.push({
                 key: 'info',
                 label: ['个人信息', '人员管理'][1],
                 icon: <AppstoreOutlined/>,
                 children: [
-                    {key: '5', label: ['Option 5', '学生信息面板'][1]},
-                    {key: "6", label: ['Option5', "导入学生"][1]},
-                    {key: "7", label: ['Option5', "管理老师"][1]}
+                    {key: '5', label: '学生信息面板'},
+                    {key: "6", label: "导入学生信息"},
+                    {key: "8", label: "导入老师信息"},
+                    {key: "7", label: "管理老师"}
                 ],
             },
             {
@@ -67,26 +69,32 @@ const Home: React.FC = () => {
     const onClick: MenuProps['onClick'] = (e) => {
         console.log(e);
         if (e.key === '6') {
-            showModal()
+            showModal(1)
+            return
+        } else if (e.key === '8') {
+            showModal(2)
             return
         }
         navigate(e.key)
     };
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const showModal = () => {
-        setIsModalOpen(true);
+    const [isModal1Open, setIsModal1Open] = useState(false);
+    const [isModal2Open, setIsModal2Open] = useState(false);
+    const showModal = (n: number) => {
+        if (n === 1)
+            setIsModal1Open(true);
+        else
+            setIsModal2Open(true);
     };
 
-    const handleOk = () => {
-        const $fileInput =   $('#studentsFile').length != 0 ? $('#studentsFile'):
+    const handleOk = (n: number) => {
+        const $fileInput = $('#studentsFile').length != 0 ? $('#studentsFile') :
             $('<input/>', {
-            type: 'file',
-            id: "studentsFile",
-            style: 'display:none',
-            accept: '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
-            multiple: false
-        }).appendTo('body')
+                type: 'file',
+                id: "studentsFile",
+                style: 'display:none',
+                accept: '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
+                multiple: false
+            }).appendTo('body')
         $fileInput.trigger("click")
         $fileInput.on('change', async function () {
             const $in = $(this)[0] as HTMLInputElement
@@ -97,7 +105,8 @@ const Home: React.FC = () => {
             //
             console.log(form)
             try {
-                const resp = await Fetch("/api/students/import", {
+                const path = n === 1 ? "/api/students/import" : "/api/teachers/import";
+                const resp = await Fetch(path, {
                     method: "POST",
                     body: form,
                 })
@@ -116,11 +125,17 @@ const Home: React.FC = () => {
                 $in.remove()
             }
         })
-        setIsModalOpen(false);
+        if (n === 1)
+            setIsModal1Open(false);
+        else
+            setIsModal2Open(false);
     };
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
+    const handleCancel = (n:number) => {
+        if (n === 1)
+            setIsModal1Open(false);
+        else
+            setIsModal2Open(false);
     };
 
     return (
@@ -139,7 +154,12 @@ const Home: React.FC = () => {
             <div className='w-full h-full relative'>
                 <Outlet></Outlet>
             </div>
-            <Modal title="导入学生信息" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="导入学生信息" open={isModal1Open} onOk={()=>handleOk(1)} onCancel={()=>handleCancel(1)}>
+                <div>
+                    <p>请选择格式为XXX的excel文件,文件后缀名为.xsxl</p>
+                </div>
+            </Modal>
+            <Modal title="导入老师" open={isModal2Open} onOk={()=>handleOk(2)} onCancel={()=>handleCancel(2)}>
                 <div>
                     <p>请选择格式为XXX的excel文件,文件后缀名为.xsxl</p>
                 </div>
