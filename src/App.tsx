@@ -17,6 +17,7 @@ import { motion } from 'framer-motion';
 import TeacherList from "@/components/teacher_manage.tsx";
 import { Provider } from 'react-redux';
 import store     from "@/store";
+import ProtectedRoute from "@/components/protectedRoute.tsx";
 const A = withErrorCheck(Login)
 const routers = createBrowserRouter([
     {
@@ -31,14 +32,14 @@ const routers = createBrowserRouter([
         ><A /></motion.div>
     }, {
         path: "/home",
-        element: <motion.div
+        element: <ProtectedRoute><motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{
                 duration: 1
             }}
-        ><Home /></motion.div>,
+        ><Home /></motion.div></ProtectedRoute>,
         children: [
             {
                 index: true,
