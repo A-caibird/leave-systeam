@@ -59,9 +59,8 @@ function PhoneLogin() {
         const before = $('span.ant-input-group-addon');
         before.css("width", 110 / 16.4 + "rem")
             .css("background-color", "white")
-
         $('span.ant-input-group-addon[style="width: 6.707317rem; background-color: white;"]:contains("获取验证码")').css('background-color', 'green')
-    })
+    },[])
 
     const [userInfo, setUserInfo] = useState<{
         phone: string,
@@ -89,7 +88,6 @@ function PhoneLogin() {
     }
 
     function submit(e: React.MouseEvent<HTMLElement, MouseEvent>) {
-        alert(userInfo.identify)
         console.log(e.currentTarget)
     }
 
@@ -161,7 +159,9 @@ function AccountLogin() {
             sessionStorage.setItem("UserInfo", JSON.stringify(body))
             navigate("/home")
         } else if (resp.status === 401) {
-            message.info(await resp.text())
+            message.error(await resp.text())
+        }else{
+            message.error("服务器繁忙,请稍后再试!")
         }
     }
 

@@ -7,27 +7,27 @@ import StudentBarChart from "@/components/Bar-Charts";
 import StudentInfoList from "./student_info_list";
 const datahero2 = [
     {
-        name: 'Noche Holding AG',
+        name: '南京',
         value: 9800,
     },
     {
-        name: 'Rain Drop AG',
+        name: '北京',
         value: 4567,
     },
     {
-        name: 'Push Rail AG',
+        name: '杭州',
         value: 3908,
     },
     {
-        name: 'Flow Steal AG',
+        name: '成都',
         value: 2400,
     },
     {
-        name: 'Tiny Loop Inc.',
+        name: '宁波',
         value: 2174,
     },
     {
-        name: 'Anton Resorts Holding',
+        name: '上海',
         value: 1398,
     },
 ];

@@ -8,7 +8,7 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
     const location = useLocation();
-    const userInfo = sessionStorage.getItem('userInfo');
+    const userInfo = sessionStorage.getItem('UserInfo');
 
     if (!userInfo) {
         // 如果未登录，重定向到登录页面或显示错误消息

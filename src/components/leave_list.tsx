@@ -16,7 +16,8 @@ const LeaveList: React.FC = () => {
 
     useEffect(() => {
         Fetch(`/api/leave/student/${"3210621073"}?pageNumber=${pageNumber}&pageSize=${pageSize}`, {}).then(async (res) => {
-            setLeaveInfos(await res.json())
+            const data = await res.json();
+            setLeaveInfos(data)
         }).catch((err)=>{
             console.log(err);
         })

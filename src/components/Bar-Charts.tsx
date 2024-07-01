@@ -5,33 +5,33 @@ import { useState } from 'react';
 const data = [
     {
         date: 'CS 1',
-        '2025届': 68560,
-        '2024届': 28560,
+        '2025届': 40,
+        '2024届': 35,
     },
     {
         date: 'CS 2 ',
-        '2025届': 70320,
-        '2024届': 30320,
+        '2025届': 38,
+        '2024届': 32,
     },
     {
         date: 'CS 3',
-        '2025届': 80233,
-        '2024届': 70233,
+        '2025届': 39,
+        '2024届': 37,
     },
     {
         date: 'CS 4',
-        '2025届': 55123,
-        '2024届': 45123,
+        '2025届': 40,
+        '2024届': 33,
     },
     {
         date: 'CS 5',
-        '2025届': 56000,
-        '2024届': 80600,
+        '2025届': 33,
+        '2024届': 34,
     },
     {
         date: 'CS 6',
-        '2025届': 100000,
-        '2024届': 85390,
+        '2025届':38,
+        '2024届': 34,
     },
 ];
 
@@ -41,7 +41,7 @@ function valueFormatter(number: number) {
         notation: 'compact',
         compactDisplay: 'short',
         style: 'currency',
-        currency: 'USD',
+        currency: 'CNY',
     });
 
     return formatter.format(number);

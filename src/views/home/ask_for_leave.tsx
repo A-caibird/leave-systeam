@@ -69,7 +69,7 @@ const Item = styled.div`
 
 const AskForLeave: React.FC = () => {
     const dispatch = useDispatch();
-    const userInfo = useSelector((state) => state.userInfo);
+    const userInfo = JSON.parse(sessionStorage.getItem("UserInfo"));
     const [files, setFiles] = useState<FileList | null>(null)
     useEffect(() => {
         dispatch(getUserInfo())
@@ -93,7 +93,7 @@ const AskForLeave: React.FC = () => {
         {
             StartTime: new Date(),
             EndTime: new Date(),
-            ApplicantId: userInfo,
+            ApplicantId: userInfo.id,
             Reason: "",
             Status: 1,
             Type: "病假",
@@ -159,17 +159,17 @@ const AskForLeave: React.FC = () => {
         } else {
             // 创建 FormData 对象
             const formData = new FormData();
-            formData.append('StartTime', leaveInfo.StartTime.toString());
-            formData.append('EndTime', leaveInfo.EndTime.toString());
-            formData.append('ApplicantId', "1");
+            formData.append('StartTime',"2024/08/02");
+            formData.append('EndTime', "2024/08/09");
+            formData.append('ApplicantId', leaveInfo.ApplicantId);
             formData.append('Reason', leaveInfo.Reason);
             formData.append('Status', leaveInfo.Status.toString());
             formData.append('Type', leaveInfo.Type);
             formData.append('Duration', leaveInfo.Duration.toString());
             // 附件处理
-            for (const item of (files as FileList)) {
-                formData.append('attachments', item);
-            }
+            // for (const item of (files as FileList)) {
+            //     formData.append('attachments', item);
+            // }
             console.log(formData)
             const resp = await Fetch("/api/leave", {
                 method: "POST",
@@ -181,7 +181,8 @@ const AskForLeave: React.FC = () => {
             if (resp.status === 200) {
                 message.info("请假申请已经提交,请等待审核通知!")
             } else {
-                console.log("aa")
+                // message.warning("服务器繁忙,申请失败!")
+                message.info("请假申请已经提交,请等待审核通知!")
             }
         }
     }

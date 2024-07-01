@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import {configureStore, createSlice} from '@reduxjs/toolkit';
 
 // 创建一个slice
 const uniqueIdSlice = createSlice({
@@ -8,13 +8,21 @@ const uniqueIdSlice = createSlice({
         generateUniqueId: state => state + 1
     }
 });
-
-export const { generateUniqueId } = uniqueIdSlice.actions;
+const userInfoSlice = createSlice({
+    name: "userInfo",
+    initialState: null,
+    reducers: {
+        getUserInfo: ()=>(sessionStorage.getItem("UserInfo") ? JSON.parse(sessionStorage.getItem("UserInfo") as string) : null)
+    }
+})
+export const {getUserInfo} = userInfoSlice.actions;
+export const {generateUniqueId} = uniqueIdSlice.actions;
 
 // 配置store
 const store = configureStore({
     reducer: {
-        uniqueId: uniqueIdSlice.reducer
+        uniqueId: uniqueIdSlice.reducer,
+        userInfo: userInfoSlice.reducer,
     }
 });
 
