@@ -4,7 +4,8 @@ import {Cascader, message} from 'antd';
 import styled from "styled-components";
 import {DatePicker} from 'antd';
 import TextArea from "antd/es/input/TextArea";
-import FileUpload from "@/components/fileUpload.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {getUserInfo} from "@/store";
 import $ from 'jquery'
 import dayjs from "dayjs";
 import Fetch from "@/utils/api/fetch";
@@ -17,32 +18,32 @@ interface Option {
 
 const options: Option[] = [
     {
-        value: 'zhejiang',
+        value: '事假',
         label: '事假',
         children: [
             {
-                value: 'hangzhou',
+                value: '实习',
                 label: '实习',
             },
             {
-                value: "vtrls",
+                value: "探亲",
                 label: '探亲'
             },
             {
-                value: "marry",
+                value: "结婚",
                 label: '结婚'
             }
         ],
     },
     {
-        value: 'jiangsu',
+        value: '病假',
         label: '病假',
     },
     {
-        value: 'school',
+        value: '新生入学',
         label: '新生入学'
     }, {
-        value: 'other',
+        value: '其他',
         label: '其他'
     }
 ];
@@ -67,6 +68,18 @@ const Item = styled.div`
 `
 
 const AskForLeave: React.FC = () => {
+    const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.userInfo);
+    const [files, setFiles] = useState<FileList | null>(null)
+    useEffect(() => {
+        dispatch(getUserInfo())
+    }, [dispatch]);
+    //
+    useEffect(() => {
+        $('div.ant-picker.ant-picker-outlined.css-dev-only-do-not-override-zg0ahe').css("width", "184px");
+    }, [])
+    //
+    const [detailCheck, setDetailCheck] = useState<boolean>(false)
     const [leaveInfo, setLeaveInfo] = useState<{
         StartTime: Date,
         EndTime: Date,
@@ -74,17 +87,24 @@ const AskForLeave: React.FC = () => {
         Reason: string,
         Status: number,
         Type: string,
-        Duration: number
+        Duration: number,
+        attachments: FileList | null,
     }>(
-        {StartTime: new Date(), EndTime: new Date(), ApplicantId: "", Reason: "", Status: 1, Type: "病假", Duration: 1}
+        {
+            StartTime: new Date(),
+            EndTime: new Date(),
+            ApplicantId: userInfo,
+            Reason: "",
+            Status: 1,
+            Type: "病假",
+            Duration: 1,
+            attachments: null
+        }
     )
-    useEffect(() => {
-        $('div.ant-picker.ant-picker-outlined.css-dev-only-do-not-override-zg0ahe').css("width", "184px");
-    }, [leaveInfo])
-    const [detailCheck, setDetailCheck] = useState<boolean>(false)
+    //
     const onChangeStartDataPick: DatePickerProps['onChange'] = async (date) => {
         const duration = dayjs(leaveInfo.EndTime).diff(dayjs(date), 'day') + 1
-        if ( dayjs(leaveInfo.EndTime).isAfter(dayjs(date))) {
+        if (dayjs(leaveInfo.EndTime).isAfter(dayjs(date))) {
             setLeaveInfo(prev => ({
                 ...prev,
                 Duration: duration,
@@ -101,25 +121,29 @@ const AskForLeave: React.FC = () => {
     }
 
     const onChangeEndDataPick: DatePickerProps['onChange'] = async (date) => {
-            const duration: number = date.diff(dayjs(leaveInfo.StartTime), 'day') + 1;
-            if (date.isAfter(leaveInfo.StartTime) || date.isSame(leaveInfo.StartTime)) {
-                setLeaveInfo(prev => ({
-                    ...prev,
-                    Duration: duration,
-                    EndTime: date.toDate()
-                }))
-            } else {
-                setLeaveInfo(prev => ({
-                    ...prev,
-                    Duration: -100,
-                    EndTime: date.toDate()
-                }))
-                await message.warning("结束时间不能早于开始时间!")
-            }
+        const duration: number = date.diff(dayjs(leaveInfo.StartTime), 'day') + 1;
+        if (date.isAfter(leaveInfo.StartTime) || date.isSame(leaveInfo.StartTime)) {
+            setLeaveInfo(prev => ({
+                ...prev,
+                Duration: duration,
+                EndTime: date.toDate()
+            }))
+        } else {
+            setLeaveInfo(prev => ({
+                ...prev,
+                Duration: -100,
+                EndTime: date.toDate()
+            }))
+            await message.warning("结束时间不能早于开始时间!")
+        }
     }
 
     const onChangeCascader: CascaderProps<Option>['onChange'] = (value) => {
         console.log(value);
+        setLeaveInfo(prev => ({
+            ...prev,
+            Type: value.join("-")
+        }))
     };
     const onDetailChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setDetailCheck(e.target.value.length >= 5 && e.target.value.length <= 200)
@@ -130,20 +154,47 @@ const AskForLeave: React.FC = () => {
     }
 
     async function onSubmit() {
-        if (detailCheck) {
-            message.warning("结束时间不能晚于开始时间!")
+        if (!detailCheck) {
+            message.error("请假详细事字数不符合要求!")
         } else {
+            // 创建 FormData 对象
+            const formData = new FormData();
+            formData.append('StartTime', leaveInfo.StartTime.toString());
+            formData.append('EndTime', leaveInfo.EndTime.toString());
+            formData.append('ApplicantId', "1");
+            formData.append('Reason', leaveInfo.Reason);
+            formData.append('Status', leaveInfo.Status.toString());
+            formData.append('Type', leaveInfo.Type);
+            formData.append('Duration', leaveInfo.Duration.toString());
+            // 附件处理
+            for (const item of (files as FileList)) {
+                formData.append('attachments', item);
+            }
+            console.log(formData)
             const resp = await Fetch("/api/leave", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "multipart/form-data"
                 },
-                body: JSON.stringify(leaveInfo)
+                body: formData
             })
             if (resp.status === 200) {
                 message.info("请假申请已经提交,请等待审核通知!")
+            } else {
+                console.log("aa")
             }
         }
+    }
+
+    function onFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+        setLeaveInfo(prev => ({
+            ...prev,
+            attachments: e.target.files
+        }))
+        setFiles(e.target.files)
+        setTimeout(() => {
+            console.log(files)
+        }, 1000)
     }
 
     return (
@@ -157,7 +208,7 @@ const AskForLeave: React.FC = () => {
                     请假类型
                 </span>
                 <span className={"absolute right-[17%]"}>
-                    <Cascader defaultValue={['zhejiang', 'hangzhou', 'xihu']} options={options}
+                    <Cascader defaultValue={['病假']} options={options}
                               onChange={onChangeCascader}/>
                 </span>
             </Item>
@@ -183,7 +234,7 @@ const AskForLeave: React.FC = () => {
                     请假时长
                 </span>
                 <span
-                    className={"absolute right-[17%] dark:text-white w-[184px] border-1 bg-white rounded-md "+ (leaveInfo.Duration < 0 ? "text-[red]":"text-black")}>
+                    className={"absolute right-[17%] dark:text-white w-[184px] border-1 bg-white rounded-md " + (leaveInfo.Duration < 0 ? "text-[red]" : "text-black")}>
                     {leaveInfo.Duration}天
                 </span>
             </Item>
@@ -204,8 +255,10 @@ const AskForLeave: React.FC = () => {
                             佐证附件
                         </span>
                     </div>
-                    <div className={""}>
-                        <FileUpload/>
+                    <div className={"w-full h-full"}>
+                        <input id={"aaaa"} multiple={true} className={"w-full bg-red-100"} type={"file"}
+                               onChange={onFileSelect}/>
+
                     </div>
                 </div>
             </div>
